@@ -1,0 +1,32 @@
+﻿@model QueryUrl
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+
+<div id="QueryForm" class="input-group mb-3">
+
+    <input id="searchQuery" type="text" class="form-control">
+    <div class="input-group-prepend">
+        <button id="button" class="btn btn-outline-secondary" type="button">Search</button>
+    </div>
+</div>
+
+<nav>
+    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+    </div>
+</nav>
+
+<br />
+
+<div class="tab-content" id="nav-tabContent">
+</div>
+
+<div class="d-flex justify-content-center">
+    <div id="loading" class="spinner-border" role="status" hidden="true">
+        <span class="sr-only">Loading...</span>
+    </div>
+</div>
+
+<button id="loadMore" type="button" class="btn btn-primary btn-lg btn-block" hidden="true">Load more</button>
+
