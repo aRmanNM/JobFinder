@@ -1,24 +1,28 @@
 using System.Collections.Generic;
+using System.Linq;
+using Microsoft.Extensions.Configuration;
 
 namespace JobFinder.Services
 {
     public class ParserFactory : IParserFactory
     {
         private readonly IEnumerable<IParser> _parsers;
-        public ParserFactory(IEnumerable<IParser> parsers)
+        private readonly IConfiguration _configuration;
+
+        public ParserFactory(
+            IEnumerable<IParser> parsers,
+            IConfiguration configuration)
         {
             _parsers = parsers;
+            _configuration = configuration;
         }
-        public List<IParser> GetParsers()
+
+        public IParser GetParser(string name)
         {
-            List<IParser> parsers = new List<IParser>();
-
-            foreach (var item in _parsers)
-            {
-                parsers.Add(item);
-            }
-
-            return parsers;
+            if (_configuration["UseFakeServices"] == "true")
+                return _parsers.First(p => p.Name == "Fake");
+            else
+                return _parsers.First(p => p.Name == name);
         }
     }
 }

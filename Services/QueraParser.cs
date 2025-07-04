@@ -1,17 +1,20 @@
 using System.Collections.Generic;
 using JobFinder.Models;
 using HtmlAgilityPack;
-using HtmlAgilityPack.CssSelectors.NetCore;
 using System.Net;
+using System;
+using Newtonsoft.Json;
 
 
 namespace JobFinder.Services
 {
     public class QueraParser : IParser
     {
+        public string Name => "Quera";
+
         public List<JobAd> GetJobAds(QueryUrl url)
         {
-            List<JobAd> JobAds = new List<JobAd>();
+            List<JobAd> jobAds = new List<JobAd>();
 
             string queryUrl = $"https://quera.org/magnet/jobs?search={url.SearchString}&page={url.PageNumber}";
 
@@ -31,21 +34,22 @@ namespace JobFinder.Services
                 return new List<JobAd>();
 
             foreach (var node in nodes)
+            {
+                if (node == null)
+                    continue;
+
+                jobAds.Add(new JobAd()
                 {
-                    if (node == null)
-                        continue;
+                    Title = node.SelectSingleNode(".//div/div/div[2]/div[1]/h2/a/span")?.InnerHtml?.CleanStr(),
+                    LogoUrl = "https://quera.ir" + node.SelectSingleNode(".//div/div/div[1]/a/div/img")?.Attributes["src"]?.Value,
+                    Company = node.SelectSingleNode(".//div/div/div[2]/div[2]/div/p")?.InnerHtml?.CleanStr(),
+                    Location = node.SelectSingleNode(".//div/div/div[2]/div[2]/div[2]/span")?.InnerHtml?.CleanStr(),
+                    Url = "https://quera.ir" + node.SelectSingleNode(".//div/div/div[2]/div[1]/h2/a")?.Attributes["href"]?.Value,
+                    DateIdentifier = node.SelectSingleNode(".//div/div/div[2]/div[1]/div[2]/span")?.InnerHtml?.CleanStr(),
+                });
+            }
 
-                    JobAds.Add(new JobAd()
-                    {
-                        Title = node.SelectSingleNode(".//div/div/div[2]/div[1]/h2/a/span")?.InnerHtml?.CleanStr(),
-                        LogoUrl = "https://quera.ir" + node.SelectSingleNode(".//div/div/div[1]/a/div/img")?.Attributes["src"]?.Value,
-                        Company = node.SelectSingleNode(".//div/div/div[2]/div[2]/div/p")?.InnerHtml?.CleanStr(),
-                        Location = node.SelectSingleNode(".//div/div/div[2]/div[2]/div[2]/span")?.InnerHtml?.CleanStr(),
-                        Url = "https://quera.ir" + node.SelectSingleNode(".//div/div/div[2]/div[1]/h2/a")?.Attributes["href"]?.Value
-                    });
-                }
-
-            return JobAds;
+            return jobAds;
         }
     }
 }

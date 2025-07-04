@@ -28,8 +28,11 @@ namespace JobFinder
 
             services.AddScoped<IParserFactory, ParserFactory>();
 
-            services.AddSingleton<IParser, FakeQueraParser>();
-            services.AddSingleton<IParser, FakeJobinjaParser>();
+
+            services.AddScoped<IParser, FakeParser>();
+            services.AddScoped<IParser, JobinjaParser>();
+            services.AddScoped<IParser, QueraParser>();
+
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

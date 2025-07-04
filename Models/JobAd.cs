@@ -12,7 +12,7 @@ namespace JobFinder
         public string? Location { get; set; }
         public List<string> Contract { get; set; } = new List<string>();
         public string? Experience { get; set; }
-        public string? Date { get; set; }
+        public string? DateIdentifier { get; set; } // this is not necessarily a date string
         public List<string> Abilities { get; set; } = new List<string>();
     }
 }

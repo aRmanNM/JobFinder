@@ -14,8 +14,19 @@
                 <div class="col-sm-10">
                     <div class="card-body">
                         <h5 class="card-title">@item.Title</h5>
-                        <p class="card-text">@item.Company - @item.Location</p>
-                        <a href="@item.Url" class="btn btn-primary stretched-link">لینک</a>
+                        @if (!string.IsNullOrEmpty(item.Location))
+                        {
+                            <p class="card-text">@item.Company - @item.Location</p>
+                        }
+                        else
+                        {
+                            <p class="card-text">@item.Company</p>
+                        }
+                        <p class="card-text badge badge-light">@item.DateIdentifier</p>
+                        <div>
+                            <a href="@item.Url" class="btn btn-primary stretched-link">جزییات</a>
+                            <a href="@item.Url" class="btn btn-secondary stretched-link">لینک آگهی</a>
+                        </div>
                     </div>
                 </div>
             </div>
