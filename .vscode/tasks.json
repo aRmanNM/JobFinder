@@ -1,0 +1,65 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build",
+            "command": "dotnet",
+            "type": "process",
+            "options": {
+                "env": {
+                    "DOTNET_SYSTEM_GLOBALIZATION_INVARIANT": "1",
+                    "LD_LIBRARY_PATH": "/usr/local/lib"
+                }
+            },
+            "args": [
+                "build",
+                "${workspaceFolder}/JobFinder.csproj",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary;ForceNoAlign"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "restore",
+            "command": "dotnet",
+            "type": "process",
+            "options": {
+                "env": {
+                    "DOTNET_SYSTEM_GLOBALIZATION_INVARIANT": "1",
+                    "LD_LIBRARY_PATH": "/usr/local/lib" // check here: https://github.com/dotnet/core/issues/4749
+                }
+            },
+            "args": [
+                "build",
+                "${workspaceFolder}/JobFinder.csproj",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "publish",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "publish",
+                "${workspaceFolder}/JobFinder.csproj",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary;ForceNoAlign"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "watch",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "watch",
+                "run",
+                "--project",
+                "${workspaceFolder}/JobFinder.csproj"
+            ],
+            "problemMatcher": "$msCompile"
+        }
+    ]
+}
