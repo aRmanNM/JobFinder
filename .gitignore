@@ -3,8 +3,6 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
-.vscode
-
 # User-specific files
 *.rsuser
 *.suo
@@ -439,12 +437,3 @@ $RECYCLE.BIN/
 # JetBrains Rider
 .idea/
 *.sln.iml
-
-##
-## Visual Studio Code
-##
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
