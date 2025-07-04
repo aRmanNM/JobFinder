@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using JobFinder.Models;
 using HtmlAgilityPack;
 using HtmlAgilityPack.CssSelectors.NetCore;
+using System.Net;
 
 
 namespace JobFinder.Services
@@ -12,23 +13,37 @@ namespace JobFinder.Services
         {
             List<JobAd> JobAds = new List<JobAd>();
 
-            string queryUrl = "https://quera.ir/careers/jobs?level=I&city=T";
+            string queryUrl = $"https://quera.org/magnet/jobs?search={url.SearchString}&page={url.PageNumber}";
+
+            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
 
             HtmlWeb web = new HtmlWeb();
+
+            web.UserAgent = "Mozilla/5.0 (X11; Linux x86_64; rv:128.0) Gecko/20100101 Firefox/128.0";
+            web.UsingCache = false;
+            web.UseCookies = true;
+
             HtmlDocument doc = web.Load(queryUrl);
 
-            HtmlNodeCollection nodes = doc.DocumentNode.SelectNodes("//*[@id=\"jobs-segment\"]/div");
+            HtmlNodeCollection nodes = doc.DocumentNode.SelectNodes("/html/body/div[6]/div[2]/main/section/div[2]/article");
+
+            if (nodes == null)
+                return new List<JobAd>();
 
             foreach (var node in nodes)
-            {
-                JobAds.Add(new JobAd(){
-                    Title = node.SelectSingleNode(".//div[2]/h2/a/text()").InnerHtml.CleanStr(),
-                    LogoUrl = "https://quera.ir/" + node.SelectSingleNode(".//div[1]/a/img").Attributes["src"].Value,
-                    Company = node.SelectNodes(".//div[2]/div[2]")[1].InnerHtml.Split('-')[0],
-                    Location = node.SelectNodes(".//div[2]/div[2]")[1].InnerHtml.Split('-')[1],
-                    Url = "https://quera.ir/" + node.SelectSingleNode(".//div[2]/h2/a").Attributes["href"].Value
-                });
-            }
+                {
+                    if (node == null)
+                        continue;
+
+                    JobAds.Add(new JobAd()
+                    {
+                        Title = node.SelectSingleNode(".//div/div/div[2]/div[1]/h2/a/span")?.InnerHtml?.CleanStr(),
+                        LogoUrl = "https://quera.ir" + node.SelectSingleNode(".//div/div/div[1]/a/div/img")?.Attributes["src"]?.Value,
+                        Company = node.SelectSingleNode(".//div/div/div[2]/div[2]/div/p")?.InnerHtml?.CleanStr(),
+                        Location = node.SelectSingleNode(".//div/div/div[2]/div[2]/div[2]/span")?.InnerHtml?.CleanStr(),
+                        Url = "https://quera.ir" + node.SelectSingleNode(".//div/div/div[2]/div[1]/h2/a")?.Attributes["href"]?.Value
+                    });
+                }
 
             return JobAds;
         }

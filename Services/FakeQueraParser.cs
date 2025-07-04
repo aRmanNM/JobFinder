@@ -16,10 +16,10 @@ namespace JobFinder.Services
                 Company = "company name",
                 LogoUrl = "/img/logo.png",
                 Location = url.Location,
-                Contract = new string[]{"fulltime", "parttime"},
+                Contract = new List<string>() {"fulltime", "parttime"},
                 Experience = "experience here",
                 Date = "date added",
-                Abilities = new string[]{"c#", "sql", "javascript"}
+                Abilities = new List<string>() {"c#", "sql", "javascript"}
             });
             return JobAds;
         }

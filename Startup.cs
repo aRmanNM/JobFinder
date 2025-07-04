@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using JobFinder.Services;
 using Microsoft.AspNetCore.Builder;
@@ -24,7 +25,9 @@ namespace JobFinder
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+
             services.AddScoped<IParserFactory, ParserFactory>();
+
             services.AddSingleton<IParser, QueraParser>();
             services.AddSingleton<IParser, JobinjaParser>();
         }

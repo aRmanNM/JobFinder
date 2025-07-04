@@ -16,10 +16,10 @@ namespace JobFinder.Services
                 Company = "company name",
                 LogoUrl ="/img/logo.png",
                 Location = url.Location,
-                Contract = new string[]{"fulltime", "parttime"},
+                Contract = new List<string>() {"fulltime", "parttime"},
                 Experience = "experience here",
                 Date = "date added",
-                Abilities = new string[]{"c#", "sql", "javascript"}
+                Abilities = new List<string>() {"c#", "sql", "javascript"}
             });
 
             JobAds.Add(new JobAd(){
@@ -29,10 +29,10 @@ namespace JobFinder.Services
                 Company = "company name2",
                 LogoUrl = "/img/logo.png",
                 Location = url.Location,
-                Contract = new string[]{"fulltime"},
+                Contract = new List<string>() {"fulltime"},
                 Experience = "2 years",
                 Date = "today",
-                Abilities = new string[]{"python", "djngo", "nosql"}
+                Abilities = new List<string>() {"python", "djngo", "nosql"}
             });
 
             return JobAds;
