@@ -15,7 +15,6 @@ $("#button").click(function () {
 
     ajax("Jobinja", globalCounter.Jobinja, true);
     ajax("Quera", globalCounter.Quera, false);
-
 })
 
 $("#loadMore").click(function(){
@@ -53,6 +52,7 @@ function ajax(website, pageNumber, isActive) {
 function AddContent(result, website, pageNumber, isActive) {
 
     $("#loading").attr("hidden", true);
+    $("#nav-tab").attr("hidden", false);
     if (pageNumber == 1) {
         $("#nav-tab").append($(result).filter(`#${website}`));
         $("#nav-tabContent").append($(result).filter(`#nav-${website}`));

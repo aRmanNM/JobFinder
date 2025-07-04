@@ -1,26 +1,25 @@
 @model List<JobAd>
 
-<a class="nav-item nav-link" id="@ViewData["website"]" data-toggle="tab" href="#nav-@ViewData["website"]" role="tab" aria-controls="nav-@ViewData["website"]" aria-selected="true">@ViewData["website"]</a>
+<a class="nav-item nav-link" id="@ViewData["website"]" data-toggle="tab" href="#nav-@ViewData["website"]" role="tab"
+    aria-controls="nav-@ViewData["website"]" aria-selected="true">@ViewData["website-name"]</a>
 
-<div class="tab-pane fade show" id="nav-@ViewData["website"]" role="tabpanel" >
-  @foreach (var item in Model)
-  {
-      <div class="card" >
-    <div class="row no-gutters">
-        <div class="col-sm-2" style="background: #868e96;">
-            <img src="@item.LogoUrl" class="card-img-top h-100" alt="ad logo">
-        </div>
-        <div class="col-sm-10">
-            <div class="card-body">
-                <h5 class="card-title">@item.Title</h5>
-                <p class="card-text">@item.Company - @item.Location</p>
-                <a href="@item.Url" class="btn btn-primary stretched-link">Link</a>
+<div class="tab-pane fade show" id="nav-@ViewData["website"]" role="tabpanel">
+    @foreach (var item in Model)
+    {
+        <div class="card">
+            <div class="row no-gutters" dir="rtl">
+                <div class="col-sm-2" style="background: #868e96;">
+                    <img src="@item.LogoUrl" class="card-img-top h-100" alt="ad logo">
+                </div>
+                <div class="col-sm-10">
+                    <div class="card-body">
+                        <h5 class="card-title">@item.Title</h5>
+                        <p class="card-text">@item.Company - @item.Location</p>
+                        <a href="@item.Url" class="btn btn-primary stretched-link">لینک</a>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
+        <br />
+    }
 </div>
-<br />
-  }
-</div>
-
-

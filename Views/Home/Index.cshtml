@@ -1,6 +1,6 @@
 ﻿@model QueryUrl
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "صفحه خانه";
 }
 
 
@@ -8,12 +8,12 @@
 
     <input id="searchQuery" type="text" class="form-control">
     <div class="input-group-prepend">
-        <button id="button" class="btn btn-outline-secondary" type="button">Search</button>
+        <button id="button" class="btn btn-outline-secondary" type="button">جستجو</button>
     </div>
 </div>
 
 <nav>
-    <div class="nav nav-tabs" id="nav-tab" role="tablist">
+    <div class="nav nav-tabs" id="nav-tab" role="tablist" hidden="true">
     </div>
 </nav>
 
@@ -24,9 +24,9 @@
 
 <div class="d-flex justify-content-center">
     <div id="loading" class="spinner-border" role="status" hidden="true">
-        <span class="sr-only">Loading...</span>
+        <span class="sr-only">در حال بارگزاری ...</span>
     </div>
 </div>
 
-<button id="loadMore" type="button" class="btn btn-primary btn-lg btn-block" hidden="true">Load more</button>
+<button id="loadMore" type="button" class="btn btn-primary btn-lg btn-block" hidden="true">نمایش بیشتر</button>
 

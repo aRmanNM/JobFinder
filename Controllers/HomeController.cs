@@ -35,12 +35,14 @@ namespace JobFinder.Controllers
         public IActionResult JobinjaResult(QueryUrl url)
         {
             ViewData["website"] = "Jobinja";
+            ViewData["website-name"] = "جابینجا";
             return PartialView("_adPartial", _parserFactory.GetParsers()[1].GetJobAds(url));
         }
 
         public IActionResult QueraResult(QueryUrl url)
         {
             ViewData["website"] = "Quera";
+            ViewData["website-name"] = "کوئرا";
             return PartialView("_adPartial", _parserFactory.GetParsers()[0].GetJobAds(url));
         }
 

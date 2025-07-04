@@ -1,5 +1,7 @@
 {
     "omnisharp.useModernNet": false,
+    "csharpstretch.oldInterface": true,
+    "csharpstretch.oldClass": true,
     "cSpell.words": [
         "Jobinja",
         "Quera"
