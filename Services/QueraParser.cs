@@ -4,6 +4,7 @@ using HtmlAgilityPack;
 using System.Net;
 using System;
 using Newtonsoft.Json;
+using System.Threading.Tasks;
 
 
 namespace JobFinder.Services
@@ -12,7 +13,7 @@ namespace JobFinder.Services
     {
         public string Name => "Quera";
 
-        public List<JobAd> GetJobAds(QueryUrl url)
+        public async Task<List<JobAd>> GetJobAds(QueryUrl url)
         {
             List<JobAd> jobAds = new List<JobAd>();
 

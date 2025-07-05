@@ -32,18 +32,18 @@ namespace JobFinder.Controllers
             return View();
         }
 
-        public IActionResult JobinjaResult(QueryUrl url)
+        public async Task<IActionResult> JobinjaResult(QueryUrl url)
         {
             ViewData["website"] = "Jobinja";
             ViewData["website-name"] = "جابینجا";
-            return PartialView("_adPartial", _parserFactory.GetParser("Jobinja").GetJobAds(url));
+            return PartialView("_adPartial", await _parserFactory.GetParser("Jobinja").GetJobAds(url));
         }
 
-        public IActionResult QueraResult(QueryUrl url)
+        public async Task<IActionResult> QueraResult(QueryUrl url)
         {
             ViewData["website"] = "Quera";
             ViewData["website-name"] = "کوئرا";
-            return PartialView("_adPartial", _parserFactory.GetParser("Quera").GetJobAds(url));
+            return PartialView("_adPartial", await _parserFactory.GetParser("Quera").GetJobAds(url));
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

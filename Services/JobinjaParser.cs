@@ -3,6 +3,7 @@ using JobFinder.Models;
 using HtmlAgilityPack;
 using HtmlAgilityPack.CssSelectors.NetCore;
 using System.Net;
+using System.Threading.Tasks;
 
 
 namespace JobFinder.Services
@@ -11,7 +12,7 @@ namespace JobFinder.Services
     {
         public string Name => "Jobinja";
 
-        public List<JobAd> GetJobAds(QueryUrl url)
+        public async Task<List<JobAd>> GetJobAds(QueryUrl url)
         {
             List<JobAd> jobAds = new List<JobAd>();
 

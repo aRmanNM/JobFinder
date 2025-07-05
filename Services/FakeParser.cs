@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using JobFinder.Models;
 
 namespace JobFinder.Services
@@ -7,8 +8,10 @@ namespace JobFinder.Services
     {
         public string Name => "Fake";
 
-        public List<JobAd> GetJobAds(QueryUrl url)
+        public async Task<List<JobAd>> GetJobAds(QueryUrl url)
         {
+            await Task.Delay(1000 * 2);
+
             return new List<JobAd>
             {
                 new JobAd

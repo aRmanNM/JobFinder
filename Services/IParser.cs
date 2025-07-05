@@ -1,11 +1,12 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using JobFinder.Models;
 
 namespace JobFinder.Services
 {
     public interface IParser
     {
-        public string Name { get; }
-        public List<JobAd> GetJobAds(QueryUrl url);
+        string Name { get; }
+        Task<List<JobAd>> GetJobAds(QueryUrl url);
     }
 }
