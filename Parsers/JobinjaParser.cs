@@ -4,29 +4,27 @@ using HtmlAgilityPack;
 using HtmlAgilityPack.CssSelectors.NetCore;
 using System.Net;
 using System.Threading.Tasks;
+using System.Threading;
+using System;
+using JobFinder.Helpers;
 
 
-namespace JobFinder.Services
+namespace JobFinder.Parsers
 {
     public class JobinjaParser : IParser
     {
         public string Name => "Jobinja";
 
-        public async Task<List<JobAd>> GetJobAds(QueryUrl url)
+        public List<JobAd> GetJobAds(QueryUrl url)
         {
             List<JobAd> jobAds = new List<JobAd>();
 
             string queryUrl = $"https://jobinja.ir/jobs?filters%5Bkeywords%5D%5B%5D=&filters%5Blocations%5D%5B%5D=%D8%AA%D9%87%D8%B1%D8%A7%D9%86&filters%5Bjob_categories%5D%5B%5D=%D9%88%D8%A8%D8%8C%E2%80%8C+%D8%A8%D8%B1%D9%86%D8%A7%D9%85%D9%87%E2%80%8C%D9%86%D9%88%DB%8C%D8%B3%DB%8C+%D9%88+%D9%86%D8%B1%D9%85%E2%80%8C%D8%A7%D9%81%D8%B2%D8%A7%D8%B1&filters[keywords][0]={url.SearchString}&page={url.PageNumber}";
 
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            var doc = WebHelper.GetHtmlDoc(queryUrl);
 
-            HtmlWeb web = new HtmlWeb();
-
-            web.UserAgent = "Mozilla/5.0 (X11; Linux x86_64; rv:128.0) Gecko/20100101 Firefox/128.0";
-            web.UsingCache = false;
-            web.UseCookies = true;
-
-            HtmlDocument doc = web.Load(queryUrl);
+            if (doc == null)
+                return new List<JobAd>();
 
             HtmlNodeCollection nodes = doc.DocumentNode.SelectNodes("//*[@id=\"js-jobSeekerSearchResult\"]/div/div[2]/section/div/ul/li");
 

@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
+﻿using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using JobFinder.Models;
-using JobFinder.Services;
+using JobFinder.Parsers;
 
 namespace JobFinder.Controllers
 {
@@ -32,18 +29,22 @@ namespace JobFinder.Controllers
             return View();
         }
 
-        public async Task<IActionResult> JobinjaResult(QueryUrl url)
+        public IActionResult JobinjaResult(QueryUrl url)
         {
+            _logger.LogInformation("jobinja result request. query: {query}", url.SearchString);
+
             ViewData["website"] = "Jobinja";
             ViewData["website-name"] = "جابینجا";
-            return PartialView("_adPartial", await _parserFactory.GetParser("Jobinja").GetJobAds(url));
+            return PartialView("_adPartial", _parserFactory.GetParser("Jobinja").GetJobAds(url));
         }
 
-        public async Task<IActionResult> QueraResult(QueryUrl url)
+        public IActionResult QueraResult(QueryUrl url)
         {
+            _logger.LogInformation("quera result request. query: {query}", url.SearchString);
+
             ViewData["website"] = "Quera";
             ViewData["website-name"] = "کوئرا";
-            return PartialView("_adPartial", await _parserFactory.GetParser("Quera").GetJobAds(url));
+            return PartialView("_adPartial", _parserFactory.GetParser("Quera").GetJobAds(url));
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

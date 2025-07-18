@@ -17,7 +17,7 @@ $("#button").click(function () {
     ajax("Quera", globalCounter.Quera, false);
 })
 
-$("#loadMore").click(function(){
+$("#loadMore").click(function () {
 
     $("#loadMore").attr("hidden", true);
     $("#loading").attr("hidden", false);
@@ -33,8 +33,8 @@ $("#loadMore").click(function(){
 function ajax(website, pageNumber, isActive) {
 
     let myData = {
-        SearchString : $("#searchQuery").val(),
-        PageNumber : pageNumber
+        SearchString: $("#searchQuery").val(),
+        PageNumber: pageNumber
     };
 
     return $.ajax({
@@ -42,8 +42,11 @@ function ajax(website, pageNumber, isActive) {
         url: `Home/${website}Result`,
         data: myData,
         dataType: "html",
-        success: function(result){
+        success: function (result) {
             AddContent(result, website, pageNumber, isActive);
+        },
+        error: function () {
+            AddContent(null, website, pageNumber, isActive);
         }
     });
 
@@ -52,7 +55,12 @@ function ajax(website, pageNumber, isActive) {
 function AddContent(result, website, pageNumber, isActive) {
 
     $("#loading").attr("hidden", true);
+
+    if (result == null)
+        return;
+
     $("#nav-tab").attr("hidden", false);
+
     if (pageNumber == 1) {
         $("#nav-tab").append($(result).filter(`#${website}`));
         $("#nav-tabContent").append($(result).filter(`#nav-${website}`));

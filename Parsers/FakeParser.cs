@@ -2,15 +2,16 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using JobFinder.Models;
 
-namespace JobFinder.Services
+namespace JobFinder.Parsers
 {
     public class FakeParser : IParser
     {
         public string Name => "Fake";
 
-        public async Task<List<JobAd>> GetJobAds(QueryUrl url)
+        public List<JobAd> GetJobAds(QueryUrl url)
         {
-            await Task.Delay(1000 * 2);
+            var delay = Task.Delay(1000 * 2);
+            delay.Wait();
 
             return new List<JobAd>
             {

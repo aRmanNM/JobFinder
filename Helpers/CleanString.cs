@@ -1,6 +1,6 @@
 using System.Text.RegularExpressions;
 
-namespace JobFinder.Services
+namespace JobFinder.Helpers
 {
     public static class ExtensionMethods
     {

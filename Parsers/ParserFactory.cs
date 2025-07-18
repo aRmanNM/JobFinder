@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.Configuration;
 
-namespace JobFinder.Services
+namespace JobFinder.Parsers
 {
     public class ParserFactory : IParserFactory
     {

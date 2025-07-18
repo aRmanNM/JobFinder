@@ -1,33 +1,25 @@
 using System.Collections.Generic;
 using JobFinder.Models;
 using HtmlAgilityPack;
-using System.Net;
-using System;
-using Newtonsoft.Json;
-using System.Threading.Tasks;
+using JobFinder.Helpers;
 
 
-namespace JobFinder.Services
+namespace JobFinder.Parsers
 {
     public class QueraParser : IParser
     {
         public string Name => "Quera";
 
-        public async Task<List<JobAd>> GetJobAds(QueryUrl url)
+        public List<JobAd> GetJobAds(QueryUrl url)
         {
             List<JobAd> jobAds = new List<JobAd>();
 
             string queryUrl = $"https://quera.org/magnet/jobs?search={url.SearchString}&page={url.PageNumber}";
 
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            var doc = WebHelper.GetHtmlDoc(queryUrl);
 
-            HtmlWeb web = new HtmlWeb();
-
-            web.UserAgent = "Mozilla/5.0 (X11; Linux x86_64; rv:128.0) Gecko/20100101 Firefox/128.0";
-            web.UsingCache = false;
-            web.UseCookies = true;
-
-            HtmlDocument doc = web.Load(queryUrl);
+            if (doc == null)
+                return new List<JobAd>();
 
             HtmlNodeCollection nodes = doc.DocumentNode.SelectNodes("/html/body/div[6]/div[2]/main/section/div[2]/article");
 

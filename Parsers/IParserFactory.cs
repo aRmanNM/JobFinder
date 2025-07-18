@@ -1,5 +1,5 @@
 
-namespace JobFinder.Services
+namespace JobFinder.Parsers
 {
     public interface IParserFactory
     {
