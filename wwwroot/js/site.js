@@ -6,6 +6,8 @@ let globalCounter = {
 $("#button").click(function () {
 
     $("#loading").attr("hidden", false);
+    $("#loadMore").attr("hidden", true);
+    $("#nav-tab").attr("hidden", true);
 
     $("#nav-tab").empty();
     $("#nav-tabContent").empty();
@@ -24,7 +26,6 @@ $("#loadMore").click(function () {
 
     let website = $(".nav-item").filter(".active").attr("id");
 
-    globalCounter[website] += 1;
     console.log(globalCounter[website]);
 
     ajax(website, globalCounter[website]);
@@ -58,6 +59,9 @@ function AddContent(result, website, pageNumber, isActive) {
 
     if (result == null)
         return;
+
+    if (result.includes("card") || globalCounter[website] == 1)
+        globalCounter[website] += 1;
 
     $("#nav-tab").attr("hidden", false);
 
