@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using JobFinder.Models;
 using HtmlAgilityPack;
 using JobFinder.Helpers;
+using System.Web;
 
 
 namespace JobFinder.Parsers
@@ -14,6 +15,7 @@ namespace JobFinder.Parsers
         {
             List<JobAd> jobAds = new List<JobAd>();
 
+            url.SearchString = HttpUtility.UrlEncode(url.SearchString);
             string queryUrl = $"https://quera.org/magnet/jobs?search={url.SearchString}&page={url.PageNumber}";
 
             var doc = WebHelper.GetHtmlDoc(queryUrl);
