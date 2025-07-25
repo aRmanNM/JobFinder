@@ -23,9 +23,33 @@
                             <p class="card-text">@item.Company</p>
                         }
                         <p class="card-text badge badge-light">@item.DateIdentifier</p>
-                        <div>
-                            @* <a target="_blank" href="@item.Url" class="btn btn-primary stretched-link">جزییات</a> *@
-                            <a target="_blank" href="@item.Url" class="btn btn-primary stretched-link">لینک آگهی</a>
+                        <div style="width: 100%;">
+                            <a style="float: right;" target="_blank" href="@item.Url" class="btn btn-primary">لینک آگهی</a>
+                            @* <button data-url="@item.Url" type="button" class="btn btn-info getDetailButton"
+                                data-toggle="modal" data-target="#exampleModalLong">
+                                جزئیات
+                            </button> *@
+                            <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog"
+                                aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                                <div class="modal-dialog modal-lg" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLongTitle">@item.Title</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            ...
+                                        </div>
+                                        <div class="modal-footer">
+                                            <a class="btn btn-secondary modal-button-ad-link" target="_blank">برو به
+                                                آگهی</a>
+                                            <button type="button" class="btn btn-primary" data-dismiss="modal">بستن</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

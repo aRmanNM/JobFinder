@@ -1,30 +1,31 @@
 using System.Collections.Generic;
 using JobFinder.Models;
 using HtmlAgilityPack;
-using HtmlAgilityPack.CssSelectors.NetCore;
-using System.Net;
-using System.Threading.Tasks;
-using System.Threading;
-using System;
 using JobFinder.Helpers;
 using System.Web;
-using System.IO;
-
+using System.Threading.Tasks;
 
 namespace JobFinder.Parsers
 {
     public class JobinjaParser : IParser
     {
+        private readonly WebHelper _webHelper;
+
+        public JobinjaParser(WebHelper webHelper)
+        {
+            _webHelper = webHelper;
+        }
+
         public string Name => "Jobinja";
 
-        public List<JobAd> GetJobAds(QueryUrl url)
+        public async Task<List<JobAd>> GetJobAds(QueryUrl url)
         {
             List<JobAd> jobAds = new List<JobAd>();
 
             url.SearchString = HttpUtility.UrlEncode(url.SearchString);
             string queryUrl = $"https://jobinja.ir/jobs?filters[keywords][]=&filters[keywords][0]={url.SearchString}&page={url.PageNumber}";
 
-            var doc = WebHelper.GetHtmlDoc(queryUrl);
+            var doc = await _webHelper.GetHtmlDoc(queryUrl);
 
             if (doc == null)
                 return new List<JobAd>();
@@ -51,6 +52,23 @@ namespace JobFinder.Parsers
             }
 
             return jobAds;
+        }
+
+        public async Task<string> GetJobDescription(string url)
+        {
+            var doc = await _webHelper.GetHtmlDoc(url);
+
+            if (doc == null)
+                return string.Empty;
+
+            var nodes = doc.DocumentNode.SelectSingleNode("/html/body/div/div[3]/div[1]/div/div[1]/section/div[2]");
+
+            // if (node == null)
+            //     return string.Empty;
+
+            // return node.InnerHtml;
+
+            return string.Empty;
         }
     }
 }

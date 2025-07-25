@@ -7,6 +7,7 @@ namespace JobFinder.Parsers
     public interface IParser
     {
         string Name { get; }
-        List<JobAd> GetJobAds(QueryUrl url);
+        Task<List<JobAd>> GetJobAds(QueryUrl url);
+        Task<string> GetJobDescription(string url);
     }
 }

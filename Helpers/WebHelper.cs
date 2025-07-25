@@ -1,6 +1,4 @@
-using System;
-using System.Net;
-using System.Threading;
+using System.Net.Http;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
 
@@ -8,31 +6,23 @@ namespace JobFinder.Helpers
 {
     public class WebHelper
     {
-        public static HtmlDocument? GetHtmlDoc(string queryUrl)
+        private readonly HttpClient _client;
+
+        public WebHelper(IHttpClientFactory httpClientFactory)
         {
-            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            _client = httpClientFactory.CreateClient("Default");
+        }
 
-            HtmlWeb web = new HtmlWeb();
+        public async Task<HtmlDocument?> GetHtmlDoc(string queryUrl)
+        {
+            var response = await _client.GetAsync(queryUrl);
 
-            web.UserAgent = "Mozilla/5.0 (X11; Linux x86_64; rv:128.0) Gecko/20100101 Firefox/128.0";
-            web.UsingCache = false;
-            web.UseCookies = true;
+            var htmlContent = await response.Content.ReadAsStringAsync();
 
-            var cts = new CancellationTokenSource(TimeSpan.FromSeconds(3));
+            var page = new HtmlDocument();
+            page.LoadHtml(htmlContent);
 
-            var task = Task.Run(() => web.Load(queryUrl));
-
-            try
-            {
-                task.Wait(cts.Token);
-                var doc = task.Result;
-
-                return doc;
-            }
-            catch (System.Exception)
-            {
-                return null;
-            }
+            return page;
         }
     }
 }

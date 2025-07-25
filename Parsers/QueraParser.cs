@@ -3,22 +3,29 @@ using JobFinder.Models;
 using HtmlAgilityPack;
 using JobFinder.Helpers;
 using System.Web;
-
+using System.Threading.Tasks;
 
 namespace JobFinder.Parsers
 {
     public class QueraParser : IParser
     {
+        private readonly WebHelper _webHelper;
+
+        public QueraParser(WebHelper webHelper)
+        {
+            _webHelper = webHelper;
+        }
+
         public string Name => "Quera";
 
-        public List<JobAd> GetJobAds(QueryUrl url)
+        public async Task<List<JobAd>> GetJobAds(QueryUrl url)
         {
             List<JobAd> jobAds = new List<JobAd>();
 
             url.SearchString = HttpUtility.UrlEncode(url.SearchString);
             string queryUrl = $"https://quera.org/magnet/jobs?search={url.SearchString}&page={url.PageNumber}";
 
-            var doc = WebHelper.GetHtmlDoc(queryUrl);
+            var doc = await _webHelper.GetHtmlDoc(queryUrl);
 
             if (doc == null)
                 return new List<JobAd>();
@@ -45,6 +52,11 @@ namespace JobFinder.Parsers
             }
 
             return jobAds;
+        }
+
+        public async Task<string> GetJobDescription(string url)
+        {
+            return await Task.FromResult(string.Empty);
         }
     }
 }

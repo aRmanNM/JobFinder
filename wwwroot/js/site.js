@@ -31,6 +31,27 @@ $("#loadMore").click(function () {
     ajax(website, globalCounter[website]);
 })
 
+$(document).on("click", ".getDetailButton", function () {
+    let url = $(this).attr("data-url");
+    let website = $(".nav-item").filter(".active").attr("id"); // service name
+
+    let myData = new FormData();
+    myData.append('url', url);
+    myData.append('name', website);
+
+    $.ajax({
+        type: "POST",
+        url: `Home/AdDetail`,
+        data: myData,
+        processData: false,
+        contentType: false,
+        success: function (result) {
+            $(".modal-body").text(result);
+            $(".modal-button-ad-link").attr("href", url);
+        }
+    })
+})
+
 function ajax(website, pageNumber, isActive) {
 
     let myData = {
