@@ -35,6 +35,11 @@ $(document).on("click", ".getDetailButton", function () {
     let url = $(this).attr("data-url");
     let website = $(".nav-item").filter(".active").attr("id"); // service name
 
+    $(".modal-button-ad-link").attr("href", url);
+
+    // reset state
+    $(".modal-body").html(null);
+
     let myData = new FormData();
     myData.append('url', url);
     myData.append('name', website);
@@ -46,8 +51,7 @@ $(document).on("click", ".getDetailButton", function () {
         processData: false,
         contentType: false,
         success: function (result) {
-            $(".modal-body").text(result);
-            $(".modal-button-ad-link").attr("href", url);
+            $(".modal-body").html(result);
         }
     })
 })

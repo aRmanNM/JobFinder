@@ -4,6 +4,7 @@ using HtmlAgilityPack;
 using JobFinder.Helpers;
 using System.Web;
 using System.Threading.Tasks;
+using HtmlAgilityPack.CssSelectors.NetCore;
 
 namespace JobFinder.Parsers
 {
@@ -61,14 +62,12 @@ namespace JobFinder.Parsers
             if (doc == null)
                 return string.Empty;
 
-            var nodes = doc.DocumentNode.SelectSingleNode("/html/body/div/div[3]/div[1]/div/div[1]/section/div[2]");
+            var node = doc.DocumentNode.QuerySelector("div.o-box__text:nth-child(4)");
 
-            // if (node == null)
-            //     return string.Empty;
+            if (node == null)
+                return string.Empty;
 
-            // return node.InnerHtml;
-
-            return string.Empty;
+            return node.InnerHtml;
         }
     }
 }
