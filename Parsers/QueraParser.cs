@@ -56,7 +56,17 @@ namespace JobFinder.Parsers
 
         public async Task<string> GetJobDescription(string url)
         {
-            return await Task.FromResult(string.Empty);
+            var doc = await _webHelper.GetHtmlDoc(url);
+
+            if (doc == null)
+                return string.Empty;
+
+            var node = doc.DocumentNode.SelectSingleNode("/html/body/div[6]/div[2]/main/section/div/div/div[1]/div[1]/div");
+
+            if (node == null)
+                return string.Empty;
+
+            return node.InnerHtml;
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿
-
 let globalCounter = {
 };
 
@@ -33,9 +32,11 @@ $("#loadMore").click(function () {
 
 $(document).on("click", ".getDetailButton", function () {
     let url = $(this).attr("data-url");
+    let title = $(this).attr("data-title");
     let website = $(".nav-item").filter(".active").attr("id"); // service name
 
     $(".modal-button-ad-link").attr("href", url);
+    $("#exampleModalLongTitle").text(title);
 
     // reset state
     $(".modal-body").html(null);
@@ -104,6 +105,3 @@ function AddContent(result, website, pageNumber, isActive) {
     }
 
 }
-
-
-
