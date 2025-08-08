@@ -30,6 +30,7 @@ namespace JobFinder
             services.AddScoped<IParser, FakeParser>();
             services.AddScoped<IParser, JobinjaParser>();
             services.AddScoped<IParser, QueraParser>();
+            services.AddScoped<IParser, JobvisionParser>();
 
             services.AddHttpClient("Default", opt =>
             {

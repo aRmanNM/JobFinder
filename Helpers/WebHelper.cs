@@ -1,6 +1,10 @@
+using System;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using HtmlAgilityPack;
+using JobFinder.Models;
+using Newtonsoft.Json;
 
 namespace JobFinder.Helpers
 {
@@ -23,6 +27,19 @@ namespace JobFinder.Helpers
             page.LoadHtml(htmlContent);
 
             return page;
+        }
+
+        public async Task<T?> Post<T>(string url, object body) where T : BaseWebHelperResponse
+        {
+            var content = new StringContent(JsonConvert.SerializeObject(body), Encoding.UTF8, "application/json");
+            var response = await _client.PostAsync(url, content);
+
+            if (!response.IsSuccessStatusCode)
+                return null;
+
+            var result = await response.Content.ReadAsStringAsync();
+
+            return JsonConvert.DeserializeObject<T?>(result);
         }
     }
 }

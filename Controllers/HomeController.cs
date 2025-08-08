@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using JobFinder.Models;
 using JobFinder.Parsers;
+using System;
 
 namespace JobFinder.Controllers
 {
@@ -45,6 +46,15 @@ namespace JobFinder.Controllers
             ViewData["website"] = "Quera";
             ViewData["website-name"] = "کوئرا";
             return PartialView("_adPartial", await _parserFactory.GetParser("Quera").GetJobAds(url));
+        }
+
+        public async Task<IActionResult> JobvisionResult(QueryUrl url)
+        {
+            _logger.LogInformation("jobvision result request. query: {query}", url.SearchString);
+
+            ViewData["website"] = "Jobvision";
+            ViewData["website-name"] = "جاب‌ویژن";
+            return PartialView("_adPartial", await _parserFactory.GetParser("Jobvision").GetJobAds(url));
         }
 
         [HttpPost]

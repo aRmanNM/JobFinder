@@ -13,9 +13,11 @@ $("#button").click(function () {
 
     globalCounter.Jobinja = 1;
     globalCounter.Quera = 1;
+    globalCounter.Jobvision = 1;
 
     ajax("Jobinja", globalCounter.Jobinja, true);
     ajax("Quera", globalCounter.Quera, false);
+    ajax("Jobvision", globalCounter.Jobvision, false);
 })
 
 $("#loadMore").click(function () {
