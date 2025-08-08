@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using JobFinder.Models;
@@ -64,7 +65,8 @@ namespace JobFinder.Parsers
 
         public async Task<string> GetJobDescription(string url)
         {
-            return await Task.FromResult(
+            await Task.Delay(TimeSpan.FromSeconds(3));
+            return
 @"
     دسته‌بندی شغلی
     وب،‌ برنامه‌نویسی و نرم‌افزار
@@ -122,7 +124,7 @@ namespace JobFinder.Parsers
     معافیت دائم پایان خدمت
     حداقل مدرک تحصیلی
     مهم نیست
-");
+";
         }
     }
 }

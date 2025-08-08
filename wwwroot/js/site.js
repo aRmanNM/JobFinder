@@ -40,6 +40,9 @@ $(document).on("click", ".getDetailButton", function () {
     $(".modal-button-ad-link").attr("href", url);
     $("#exampleModalLongTitle").text(title);
 
+    $("#loading-modal").attr("hidden", false);
+    $("#loading-modal-container").attr("hidden", false);
+
     // reset state
     $(".modal-body").html(null);
 
@@ -54,6 +57,8 @@ $(document).on("click", ".getDetailButton", function () {
         processData: false,
         contentType: false,
         success: function (result) {
+            $("#loading-modal").attr("hidden", true);
+            $("#loading-modal-container").attr("hidden", true);
             $(".modal-body").html(result);
         }
     })
