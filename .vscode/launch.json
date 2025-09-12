@@ -22,7 +22,7 @@
             "env": {
                 "ASPNETCORE_ENVIRONMENT": "Development",
                 "DOTNET_SYSTEM_GLOBALIZATION_INVARIANT": "1",
-                "LD_LIBRARY_PATH": "/usr/local/lib"
+                "LD_LIBRARY_PATH": "/usr/local/lib64"
             },
             "sourceFileMap": {
                 "/Views": "${workspaceFolder}/Views"

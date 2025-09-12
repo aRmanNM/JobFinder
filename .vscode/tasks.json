@@ -8,7 +8,7 @@
             "options": {
                 "env": {
                     "DOTNET_SYSTEM_GLOBALIZATION_INVARIANT": "1",
-                    "LD_LIBRARY_PATH": "/usr/local/lib"
+                    "LD_LIBRARY_PATH": "/usr/local/lib64"
                 }
             },
             "args": [
@@ -26,7 +26,7 @@
             "options": {
                 "env": {
                     "DOTNET_SYSTEM_GLOBALIZATION_INVARIANT": "1",
-                    "LD_LIBRARY_PATH": "/usr/local/lib" // check here: https://github.com/dotnet/core/issues/4749
+                    "LD_LIBRARY_PATH": "/usr/local/lib64" // check here: https://github.com/dotnet/core/issues/4749
                 }
             },
             "args": [
@@ -56,7 +56,7 @@
             "options": {
                 "env": {
                     "DOTNET_SYSTEM_GLOBALIZATION_INVARIANT": "1",
-                    "LD_LIBRARY_PATH": "/usr/local/lib" // check here: https://github.com/dotnet/core/issues/4749
+                    "LD_LIBRARY_PATH": "/usr/local/lib64" // check here: https://github.com/dotnet/core/issues/4749
                 }
             },
             "args": [
