@@ -6,10 +6,45 @@
 
 <div id="QueryForm" class="input-group mb-3">
 
+    <div class="dropdown input-group-prepend">
+        <button type="button" class="btn btn-outline-secondary dropdown-toggle" id="selectBtn" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            وبسایت‌ها (هیچکدام)
+        </button>
+        <div class="dropdown-menu">
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="selectAllSources">
+                <label class="form-check-label" for="selectAllSources">
+                    همه موارد
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input source-checkbox" type="checkbox" value="Jobvision" id="source1">
+                <label class="form-check-label" for="Jobvision">
+                    جاب‌ویژن
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input source-checkbox" type="checkbox" value="Quera" id="source2">
+                <label class="form-check-label" for="Quera">
+                    کوئرا
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input source-checkbox" type="checkbox" value="Jobinja" id="source3">
+                <label class="form-check-label" for="Jobinja">
+                    جابینجا
+                </label>
+            </div>
+        </div>
+    </div>
+
     <input id="searchQuery" type="text" class="form-control">
-    <div class="input-group-prepend">
+
+    <div class="input-group-append">
         <button id="button" class="btn btn-outline-secondary" type="button">جستجو</button>
     </div>
+
 </div>
 
 <nav>

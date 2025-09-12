@@ -15,9 +15,28 @@ $("#button").click(function () {
     globalCounter.Quera = 1;
     globalCounter.Jobvision = 1;
 
-    ajax("Jobinja", globalCounter.Jobinja, true);
-    ajax("Quera", globalCounter.Quera, false);
-    ajax("Jobvision", globalCounter.Jobvision, false);
+    let activeIsSet = false;
+
+    if ($("#source1").is(":checked")) {
+        ajax("Jobvision", globalCounter.Jobvision, activeIsSet ? false : true);
+        activeIsSet = true;
+    }
+
+    if ($("#source2").is(":checked")) {
+        ajax("Quera", globalCounter.Quera, activeIsSet ? false : true);
+        activeIsSet = true;
+    }
+
+    if ($("#source3").is(":checked")) {
+        ajax("Jobinja", globalCounter.Jobinja, activeIsSet ? false : true);
+        activeIsSet = true;
+    }
+
+    // meaning nothing is selected
+    if (activeIsSet === false) {
+        $("#loading").attr("hidden", true);
+        $("#nav-tabContent").html("وبسایت انتخاب نشده است").css('text-align', 'center');
+    }
 })
 
 $("#loadMore").click(function () {
@@ -112,3 +131,35 @@ function AddContent(result, website, pageNumber, isActive) {
     }
 
 }
+
+// Select All functionality
+document.addEventListener('DOMContentLoaded', function () {
+    const selectAll = document.getElementById('selectAllSources');
+    const sourceCheckboxes = document.querySelectorAll('.source-checkbox');
+    const totalCount = sourceCheckboxes.length;
+    const selectBtn = document.getElementById('selectBtn');
+    selectAll.addEventListener('change', function () {
+        sourceCheckboxes.forEach(cb => cb.checked = selectAll.checked);
+        const count = Array.from(document.querySelectorAll('.source-checkbox')).filter(i => i.checked == true).length;
+        if (count == totalCount) {
+            selectBtn.innerText = `وبسایت‌ها (همه)`;
+        } else if (count == 0) {
+            selectBtn.innerText = `وبسایت‌ها (هیچکدام)`;
+        } else {
+            selectBtn.innerText = `وبسایت‌ها (${count} مورد)`;
+        }
+    });
+    sourceCheckboxes.forEach(cb => {
+        cb.addEventListener('change', function () {
+            selectAll.checked = Array.from(sourceCheckboxes).every(cb => cb.checked);
+            const count = Array.from(document.querySelectorAll('.source-checkbox')).filter(i => i.checked == true).length;
+            if (count == totalCount) {
+                selectBtn.innerText = `وبسایت‌ها (همه)`;
+            } else if (count == 0) {
+                selectBtn.innerText = `وبسایت‌ها (هیچکدام)`;
+            } else {
+                selectBtn.innerText = `وبسایت‌ها (${count} مورد)`;
+            }
+        });
+    });
+});

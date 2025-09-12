@@ -177,3 +177,17 @@ blockquote {
 	margin-bottom: 0px;
 	padding-bottom: 0px;
 }*/
+
+.rtl .form-check-label, [dir="rtl"] .form-check-label {
+	padding-right: 0;
+	margin: 3px;
+	padding-left: inherit;
+}
+
+.dropdown-menu {
+	padding-right: 25px;
+}
+
+.dropdown-toggle::after {
+	vertical-align: 0;
+}
