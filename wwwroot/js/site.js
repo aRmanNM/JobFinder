@@ -138,28 +138,26 @@ document.addEventListener('DOMContentLoaded', function () {
     const sourceCheckboxes = document.querySelectorAll('.source-checkbox');
     const totalCount = sourceCheckboxes.length;
     const selectBtn = document.getElementById('selectBtn');
+
     selectAll.addEventListener('change', function () {
         sourceCheckboxes.forEach(cb => cb.checked = selectAll.checked);
-        const count = Array.from(document.querySelectorAll('.source-checkbox')).filter(i => i.checked == true).length;
-        if (count == totalCount) {
-            selectBtn.innerText = `وبسایت‌ها (همه)`;
-        } else if (count == 0) {
-            selectBtn.innerText = `وبسایت‌ها (هیچکدام)`;
-        } else {
-            selectBtn.innerText = `وبسایت‌ها (${count} مورد)`;
-        }
+        updateSelectCounter(totalCount, selectBtn);
     });
     sourceCheckboxes.forEach(cb => {
         cb.addEventListener('change', function () {
             selectAll.checked = Array.from(sourceCheckboxes).every(cb => cb.checked);
-            const count = Array.from(document.querySelectorAll('.source-checkbox')).filter(i => i.checked == true).length;
-            if (count == totalCount) {
-                selectBtn.innerText = `وبسایت‌ها (همه)`;
-            } else if (count == 0) {
-                selectBtn.innerText = `وبسایت‌ها (هیچکدام)`;
-            } else {
-                selectBtn.innerText = `وبسایت‌ها (${count} مورد)`;
-            }
+            updateSelectCounter(totalCount, selectBtn);
         });
     });
 });
+
+function updateSelectCounter(totalCount, selectBtn) {
+    const count = Array.from(document.querySelectorAll('.source-checkbox')).filter(i => i.checked == true).length;
+    if (count == totalCount) {
+        selectBtn.innerText = `وبسایت‌ها (همه)`;
+    } else if (count == 0) {
+        selectBtn.innerText = `وبسایت‌ها (هیچکدام)`;
+    } else {
+        selectBtn.innerText = `وبسایت‌ها (${count} مورد)`;
+    }
+}
