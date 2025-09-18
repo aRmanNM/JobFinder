@@ -1,7 +1,7 @@
-import { Component, signal } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import { AppService } from './app.service';
-import { JsonPipe } from '@angular/common';
+import {Component, signal} from '@angular/core';
+import {RouterOutlet} from '@angular/router';
+import {AppService} from './app.service';
+import {JsonPipe} from '@angular/common';
 
 @Component({
   selector: 'app-root',
@@ -11,7 +11,7 @@ import { JsonPipe } from '@angular/common';
     <button (click)="getWeather()">get weather</button>
     <h1>{{ weather | json }}</h1>
 
-    <router-outlet />
+    <router-outlet/>
   `,
   styles: [],
 })
