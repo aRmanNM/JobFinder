@@ -1,0 +1,99 @@
+<div class="search-container">
+  <input pInputText type="text" placeholder="..." [(ngModel)]="query" />
+  <p-button
+    label="جستجو"
+    variant="outlined"
+    severity="primary"
+    (onClick)="getAds()"
+  />
+</div>
+
+<div class="source-selection">
+  <div class="flex items-center" *ngFor="let item of sources">
+    <p-checkbox size="small" [binary]="true" [(ngModel)]="item.isEnabled" />
+    <label class="ml-2">{{ item.titleFa }}</label>
+  </div>
+</div>
+
+<p-tabs *ngIf="showTabs" [value]="activeTab">
+  <p-tablist>
+    @for (item of sourcesSnapshot; track item.title) {
+    <p-tab [value]="item.title" hidden="{{ !item.isEnabled }}">{{
+      item.titleFa
+    }}</p-tab>
+    }
+  </p-tablist>
+  <p-tabpanels>
+    @for (item of sourcesSnapshot; track item.title) {
+    <p-tabpanel [value]="item.title">
+      @for (ad of item.ads; track ad.title) {
+      <p-card>
+        <div class="card-content">
+          <div class="card-image">
+            <img src="{{ ad.logoUrl }}" alt="" />
+          </div>
+          <div class="card-details">
+            <p style="font-weight: bold">{{ ad.title }}</p>
+            <p>{{ ad.company ?? "-" }}</p>
+            <p>{{ ad.location ?? "-" }}</p>
+            <p style="font-size: small">{{ ad.dateIdentifier }}</p>
+          </div>
+          <div class="card-actions">
+            <p-button
+              size="small"
+              icon="pi pi-bookmark"
+              [rounded]="true"
+              [text]="true"
+              severity="secondary"
+            />
+            <p-button
+              size="small"
+              icon="pi pi-info-circle"
+              [rounded]="true"
+              [text]="true"
+              severity="info"
+              (click)="showModal(item.title, ad.title, ad.url)"
+            />
+            <!-- <p-button
+              size="small"
+              icon="pi pi-external-link"
+              [rounded]="true"
+              [text]="true"
+              severity="primary"
+            ></p-button> -->
+            <a
+              size="small"
+              pButton
+              [href]="ad.url"
+              icon="pi pi-external-link"
+              class="p-button-rounded p-button-text"
+              target="_blank"
+            >
+            </a>
+          </div>
+        </div>
+      </p-card>
+      }
+      <div style="width: 100%; text-align: center; margin-top: 10px">
+        <p-button
+          (onClick)="loadMore(item.title, query)"
+          label="نمایش موارد بیشتر"
+          variant="text"
+          severity="secondary"
+          size="small"
+        />
+      </div>
+    </p-tabpanel>
+    }
+  </p-tabpanels>
+</p-tabs>
+
+<p-dialog
+  header="{{ modalTitle }}"
+  [modal]="true"
+  [(visible)]="modalVisible"
+  [style]="{ width: '50rem' }"
+  [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
+>
+  <div [innerHTML]="modalContent"></div>
+</p-dialog>

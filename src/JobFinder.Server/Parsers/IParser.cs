@@ -6,5 +6,5 @@ public interface IParser
 {
     string Name { get; }
     Task<List<JobAd>> GetJobAds(string query, int pageNumber);
-    Task<string> GetJobDescription(string url);
+    Task<JobAdDetail> GetJobAdDetail(string url);
 }

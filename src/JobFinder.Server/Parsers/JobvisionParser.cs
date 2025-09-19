@@ -50,18 +50,18 @@ public class JobvisionParser : IParser
         return jobAds;
     }
 
-    public async Task<string> GetJobDescription(string url)
+    public async Task<JobAdDetail> GetJobAdDetail(string url)
     {
         var doc = await _webHelper.GetHtmlDoc(url);
 
         if (doc == null)
-            return string.Empty;
+            return new JobAdDetail();
 
         var node = doc.DocumentNode.QuerySelector(".job-specification > div:nth-child(2)");
 
         if (node == null)
-            return string.Empty;
+            return new JobAdDetail();
 
-        return node.InnerHtml;
+        return new JobAdDetail { Description = node.InnerHtml };
     }
 }

@@ -27,13 +27,13 @@ public class AdsController : ControllerBase
         return Ok(ads);
     }
 
-    [HttpGet("GetDescription")]
-    public async Task<IActionResult> GetAdDescription(string serviceName, string url)
+    [HttpGet("GetDetail")]
+    public async Task<IActionResult> GetAdDetail(string serviceName, string url)
     {
         var parser = _parserFactory.GetParser(serviceName);
 
-        var description = await parser.GetJobDescription(url);
+        var adDetail = await parser.GetJobAdDetail(url);
 
-        return Ok(description);
+        return Ok(adDetail);
     }
 }

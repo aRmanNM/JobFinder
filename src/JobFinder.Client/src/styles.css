@@ -1,1 +1,70 @@
 /* You can add global styles to this file, and also import other style files */
+
+@import "primeicons/primeicons.css";
+
+.top-bar h3,
+p {
+  margin: 0px;
+}
+
+.search-container {
+  display: flex;
+}
+
+.search-container .p-inputtext {
+  width: 100%;
+  margin-left: 5px;
+}
+
+.p-menubar {
+  margin-bottom: 10px;
+}
+
+.p-tab {
+  font-size: small;
+}
+
+.p-tabs {
+  margin-bottom: 10px;
+}
+
+.source-selection {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 10px;
+}
+
+.source-selection label {
+  font-size: medium;
+}
+
+.card-content {
+  display: flex;
+  align-items: start;
+  gap: 1rem;
+}
+
+.card-image img {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+}
+
+.card-details {
+  width: 100%;
+}
+
+.card-actions {
+  display: flex;
+  flex-direction: column;
+}
+
+.card-actions .p-button {
+  margin: 0px;
+  padding: 0px;
+}
+
+a.p-button {
+  text-decoration: none !important;
+}

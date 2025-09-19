@@ -17,7 +17,6 @@ public class FakeParser : IParser
                 {
                     Title = "استخدام توسعه‌دهنده Front-end React",
                     Url = "https://quera.ir/magnet/jobs/dk7kv",
-                    Description = null,
                     Company = "شرکت اطلس راهبر دریا",
                     LogoUrl = "https://quera.ir/media/CACHE/images/public/careers/logos/f75221f6b1104022a02ae32fd2ce104a/ef44a1479cb53bfec54c50451b6b6635.png",
                     Location = "تهران",
@@ -28,7 +27,6 @@ public class FakeParser : IParser
                 {
                     Title = "استخدام برنامه‌نویس ++Embedded system C/C",
                     Url = "https://quera.ir/magnet/jobs/wxp7v",
-                    Description = null,
                     Company = "پیشروابتکارودانش",
                     LogoUrl = "https://quera.ir/media/CACHE/images/public/careers/logos/2737f2f8bfa747aba754094fda9af348/ddec892436f9dfecf981a837879245de.png",
                     Location = "شیراز",
@@ -39,7 +37,6 @@ public class FakeParser : IParser
                 {
                     Title = "استخدام برنامه‌نویس Full Stack",
                     Url = "https://quera.ir/magnet/jobs/gkx9x",
-                    Description = null,
                     Company = "مهندسی ارتباطی پیام پرداز",
                     LogoUrl = "https://quera.ir/media/CACHE/images/public/careers/logos/14133168c38f42b386192f1247b04a8d/5a45e086a3787cb6e4eb2cdb88aff686.png",
                     Location = "اصفهان",
@@ -50,7 +47,6 @@ public class FakeParser : IParser
                 {
                     Title = "استخدام کارآموز مهندسی نرم‌افزار",
                     Url = "https://quera.ir/magnet/jobs/k98qx",
-                    Description = null,
                     Company = "Ideapardazan afsoon",
                     LogoUrl = "https://quera.ir/media/CACHE/images/public/careers/logos/5b58838b188746d789e8f92f079497ca/c791a9367ef7667d8404c1e0f56fad41.png",
                     Location = null,
@@ -60,11 +56,12 @@ public class FakeParser : IParser
             });
     }
 
-    public async Task<string> GetJobDescription(string url)
+    public async Task<JobAdDetail> GetJobAdDetail(string url)
     {
         await Task.Delay(TimeSpan.FromSeconds(3));
-        return
-@"
+        return new JobAdDetail
+        {
+            Description = @"
     دسته‌بندی شغلی
     وب،‌ برنامه‌نویسی و نرم‌افزار
     موقعیت مکانی
@@ -121,6 +118,7 @@ public class FakeParser : IParser
     معافیت دائم پایان خدمت
     حداقل مدرک تحصیلی
     مهم نیست
-";
+",
+        };
     }
 }

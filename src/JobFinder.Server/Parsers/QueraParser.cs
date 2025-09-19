@@ -52,18 +52,18 @@ public class QueraParser : IParser
         return jobAds;
     }
 
-    public async Task<string> GetJobDescription(string url)
+    public async Task<JobAdDetail> GetJobAdDetail(string url)
     {
         var doc = await _webHelper.GetHtmlDoc(url);
 
         if (doc == null)
-            return string.Empty;
+            return new JobAdDetail();
 
         var node = doc.DocumentNode.SelectSingleNode("/html/body/div[6]/div[2]/main/section/div/div/div[1]/div[1]/div");
 
         if (node == null)
-            return string.Empty;
+            return new JobAdDetail();
 
-        return node.InnerHtml;
+        return new JobAdDetail { Description = node.InnerHtml };
     }
 }
