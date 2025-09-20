@@ -79,6 +79,13 @@ export class SearchComponent implements OnInit {
       this.appService
         .getAds(s.title, this.query, s.pageNumber)
         .subscribe((res: JobAd[]) => {
+          const bookmarks = this.getBookmarks();
+          res.forEach((ad) => {
+            if (bookmarks.find((b) => b.id == ad.id)) {
+              ad.bookmarked = true;
+            }
+          });
+
           if (this.activeTab == null) {
             this.activeTab = s.title;
           }
@@ -97,6 +104,13 @@ export class SearchComponent implements OnInit {
       this.appService
         .getAds(serviceName, query, source.pageNumber)
         .subscribe((res: JobAd[]) => {
+          const bookmarks = this.getBookmarks();
+          res.forEach((ad) => {
+            if (bookmarks.find((b) => b.id == ad.id)) {
+              ad.bookmarked = true;
+            }
+          });
+
           source.ads.push(...res);
         });
     }
@@ -115,5 +129,14 @@ export class SearchComponent implements OnInit {
     this.appService.getAdDetail(serviceName, url).subscribe((res) => {
       this.modalContent = res.description;
     });
+  }
+
+  bookmarkAd(ad: JobAd) {
+    this.appService.addBookmark(ad);
+    ad.bookmarked = true;
+  }
+
+  getBookmarks(): JobAd[] {
+    return this.appService.getBookmarks();
   }
 }

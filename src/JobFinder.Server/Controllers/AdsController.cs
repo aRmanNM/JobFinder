@@ -1,3 +1,4 @@
+using JobFinder.Server.Helpers;
 using JobFinder.Server.Parsers;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,6 +24,12 @@ public class AdsController : ControllerBase
         var parser = _parserFactory.GetParser(serviceName);
 
         var ads = await parser.GetJobAds(query, pageNumber);
+
+        ads.ForEach(ad =>
+        {
+            ad.Id = IdHelper.GetId(ad.Url);
+            ad.ServiceName = serviceName;
+        });
 
         return Ok(ads);
     }

@@ -2,6 +2,11 @@
 
 @import "primeicons/primeicons.css";
 
+.top-bar {
+  display: flex;
+  flex-direction: column;
+}
+
 .top-bar h3,
 p {
   margin: 0px;

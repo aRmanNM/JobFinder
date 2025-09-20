@@ -1,0 +1,52 @@
+@for (ad of bookmarks; track ad.id) {
+<p-card>
+  <div class="card-content">
+    <div class="card-image">
+      <img src="{{ ad.logoUrl }}" alt="" />
+    </div>
+    <div class="card-details">
+      <p style="font-weight: bold;">{{ ad.title }}</p>
+      <p>{{ ad.company ?? "-" }}</p>
+      <p>{{ ad.location ?? "-" }}</p>
+      <p style="font-size: small">{{ ad.dateIdentifier }}</p>
+    </div>
+    <div class="card-actions">
+      <p-button
+        size="small"
+        icon="pi pi-bookmark-fill"
+        [rounded]="true"
+        [text]="true"
+        severity="secondary"
+        (click)="removeBookmark(ad)"
+      />
+      <p-button
+        size="small"
+        icon="pi pi-info-circle"
+        [rounded]="true"
+        [text]="true"
+        severity="info"
+        (click)="showModal(ad.title, ad.title, ad.url)"
+      />
+      <a
+        size="small"
+        pButton
+        [href]="ad.url"
+        icon="pi pi-external-link"
+        class="p-button-rounded p-button-text"
+        target="_blank"
+      >
+      </a>
+    </div>
+  </div>
+</p-card>
+}
+
+<p-dialog
+  header="{{ modalTitle }}"
+  [modal]="true"
+  [(visible)]="modalVisible"
+  [style]="{ width: '50rem' }"
+  [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
+>
+  <div [innerHTML]="modalContent"></div>
+</p-dialog>

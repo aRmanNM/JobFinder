@@ -41,10 +41,11 @@
           <div class="card-actions">
             <p-button
               size="small"
-              icon="pi pi-bookmark"
+              icon="{{ ad.bookmarked ? 'pi pi-bookmark-fill' : 'pi pi-bookmark' }}"
               [rounded]="true"
               [text]="true"
               severity="secondary"
+              (onClick)="bookmarkAd(ad)"
             />
             <p-button
               size="small"
@@ -54,13 +55,6 @@
               severity="info"
               (click)="showModal(item.title, ad.title, ad.url)"
             />
-            <!-- <p-button
-              size="small"
-              icon="pi pi-external-link"
-              [rounded]="true"
-              [text]="true"
-              severity="primary"
-            ></p-button> -->
             <a
               size="small"
               pButton
