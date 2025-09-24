@@ -1,4 +1,4 @@
-import { JobAd } from "./jobAd";
+import { JobAd } from "./job-ad";
 
 export interface SearchSource {
     title: string;

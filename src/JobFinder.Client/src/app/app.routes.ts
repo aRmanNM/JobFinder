@@ -6,6 +6,7 @@ export const routes: Routes = [
   {
     path: 'search',
     component: SearchComponent,
+    data: { reuse: true }
   },
   {
     path: 'bookmarks',

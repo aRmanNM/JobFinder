@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 
 import { InputTextModule } from 'primeng/inputtext';
 import { TabsModule } from 'primeng/tabs';
@@ -7,12 +7,14 @@ import { MultiSelectModule } from 'primeng/multiselect';
 import { CheckboxModule } from 'primeng/checkbox';
 import { FormsModule } from '@angular/forms';
 import { CommonModule, JsonPipe } from '@angular/common';
-import { SearchSource } from '../searchSource';
+import { SearchSource } from '../interfaces/search-source';
 import { AppService } from '../app.service';
 import { AccordionModule } from 'primeng/accordion';
 import { CardModule } from 'primeng/card';
 import { DialogModule } from 'primeng/dialog';
-import { JobAd } from '../jobAd';
+import { JobAd } from '../interfaces/job-ad';
+import { NavigationEnd, NavigationStart, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-search',
@@ -31,8 +33,14 @@ import { JobAd } from '../jobAd';
   providers: [AppService],
   templateUrl: './search.component.html',
 })
-export class SearchComponent implements OnInit {
-  constructor(private appService: AppService) {}
+export class SearchComponent implements OnInit, OnDestroy {
+  constructor(private appService: AppService, private router: Router) { }
+
+  ngOnDestroy(): void {
+    this.sub?.unsubscribe();
+  }
+
+  private sub?: Subscription;
 
   modalVisible: boolean = false;
   modalContent: string = '';
@@ -68,6 +76,21 @@ export class SearchComponent implements OnInit {
 
   ngOnInit(): void {
     this.sourcesSnapshot = this.sources;
+
+    this.sub = this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        const bookmarks = this.getBookmarks();
+        this.sources.forEach((s) => {
+          s.ads.forEach((ad) => {
+            if (bookmarks.find((b) => b.id == ad.id)) {
+              ad.bookmarked = true;
+            } else {
+              ad.bookmarked = false;
+            }
+          })
+        });
+      }
+    });
   }
 
   getAds() {

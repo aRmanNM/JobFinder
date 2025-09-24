@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { AppService } from '../app.service';
-import { JobAd } from '../jobAd';
+import { JobAd } from '../interfaces/job-ad';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';

@@ -1,8 +1,9 @@
 import { Component, inject } from '@angular/core';
-import { Router, RouterOutlet } from '@angular/router';
+import { Router, RouteReuseStrategy, RouterOutlet } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 
 import { MenubarModule } from 'primeng/menubar';
+import { CustomReuseStrategy } from './extensions/reuse-strategy';
 
 @Component({
   selector: 'app-root',
