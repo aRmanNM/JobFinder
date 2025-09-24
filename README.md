@@ -21,6 +21,7 @@ TODOs:
 - [ ] add rate limit
 - [x] show ad description modal
 - [ ] stats api
+- [ ] dockerize and deploy
 - [ ] parsers
     - [x] jobinja
     - [x] quera
