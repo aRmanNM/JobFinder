@@ -73,3 +73,11 @@ p {
 a.p-button {
   text-decoration: none !important;
 }
+
+.loadingIndicator {
+  width: 100%;
+  text-align: center;
+}
+
+.p-progress-spinner {
+}

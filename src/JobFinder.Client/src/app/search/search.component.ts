@@ -12,6 +12,7 @@ import { AppService } from '../app.service';
 import { AccordionModule } from 'primeng/accordion';
 import { CardModule } from 'primeng/card';
 import { DialogModule } from 'primeng/dialog';
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { JobAd } from '../interfaces/job-ad';
 import { NavigationEnd, NavigationStart, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -29,6 +30,7 @@ import { Subscription } from 'rxjs';
     CardModule,
     CommonModule,
     DialogModule,
+    ProgressSpinnerModule
   ],
   providers: [AppService],
   templateUrl: './search.component.html',
@@ -39,6 +41,9 @@ export class SearchComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.sub?.unsubscribe();
   }
+
+  isLoading = false;
+  modalIsLoading = false;
 
   private sub?: Subscription;
 
@@ -94,6 +99,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   getAds() {
+    this.isLoading = true;
     this.activeTab = null;
     this.showTabs = false;
     this.sourcesSnapshot = this.sources.filter((s) => s.isEnabled == true);
@@ -102,6 +108,7 @@ export class SearchComponent implements OnInit, OnDestroy {
       this.appService
         .getAds(s.title, this.query, s.pageNumber)
         .subscribe((res: JobAd[]) => {
+          this.isLoading = false;
           const bookmarks = this.getBookmarks();
           res.forEach((ad) => {
             if (bookmarks.find((b) => b.id == ad.id)) {
@@ -119,6 +126,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   loadMore(serviceName: string, query: string) {
+    this.isLoading = true;
     let source = this.sourcesSnapshot.find((s) => s.title == serviceName);
     if (source == null) {
       return;
@@ -127,6 +135,7 @@ export class SearchComponent implements OnInit, OnDestroy {
       this.appService
         .getAds(serviceName, query, source.pageNumber)
         .subscribe((res: JobAd[]) => {
+          this.isLoading = false;
           const bookmarks = this.getBookmarks();
           res.forEach((ad) => {
             if (bookmarks.find((b) => b.id == ad.id)) {
@@ -140,6 +149,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   showModal(serviceName: string, title: string | null, url: string | null) {
+    this.modalIsLoading = true;
     this.modalContent = '';
     this.modalTitle = '';
     if (url == null) {
@@ -150,6 +160,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.modalVisible = true;
     this.modalTitle = title;
     this.appService.getAdDetail(serviceName, url).subscribe((res) => {
+      this.modalIsLoading = false;
       this.modalContent = res.description;
     });
   }

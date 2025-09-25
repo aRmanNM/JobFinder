@@ -1,4 +1,5 @@
-<p *ngIf="!showTabs" style="text-align: center; margin: 15px; font-weight: bold;">پلتفرم ما به شما کمک می‌کند به‌جای جستجو در سایت‌های مختلف، همه آگهی‌های استخدامی را در یکجا ببینید. با ابزار جستجوی
+<p *ngIf="!showTabs" style="text-align: center; margin: 15px; font-weight: bold;">پلتفرم ما به شما کمک می‌کند به‌جای
+  جستجو در سایت‌های مختلف، همه آگهی‌های استخدامی را در یکجا ببینید. با ابزار جستجوی
   هوشمند ما می‌توانید در وقت خود صرفه‌جویی کنید و سریع‌تر فرصت‌های شغلی مناسب را پیدا کنید.</p>
 
 <div class="search-container">
@@ -48,7 +49,7 @@
         </div>
       </p-card>
       }
-      <div style="width: 100%; text-align: center; margin-top: 10px">
+      <div *ngIf="!isLoading" style="width: 100%; text-align: center; margin-top: 10px">
         <p-button (onClick)="loadMore(item.title, query)" label="نمایش موارد بیشتر" variant="text" severity="secondary"
           size="small" />
       </div>
@@ -59,5 +60,14 @@
 
 <p-dialog header="{{ modalTitle }}" [modal]="true" [(visible)]="modalVisible" [style]="{ width: '50rem' }"
   [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }">
+  <div class="loadingIndicator">
+    <p-progress-spinner *ngIf="modalIsLoading" strokeWidth="8" fill="transparent" animationDuration=".5s"
+      [style]="{ width: '50px', height: '50px' }" />
+  </div>
   <div [innerHTML]="modalContent"></div>
 </p-dialog>
+
+<div class="loadingIndicator">
+  <p-progress-spinner *ngIf="isLoading" strokeWidth="8" fill="transparent" animationDuration=".5s"
+    [style]="{ width: '50px', height: '50px' }" />
+</div>

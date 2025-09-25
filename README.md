@@ -6,7 +6,7 @@ TODOs:
     - [x] init project architecture
     - [x] add PrimeNG for ui components
     - [x] re-implement previous features
-    - [ ] fix loading
+    - [x] fix loading
 - [x] bookmarking
     - [x] service logic to store bookmarks (local storage for now)
     - [x] add route caching in client side
