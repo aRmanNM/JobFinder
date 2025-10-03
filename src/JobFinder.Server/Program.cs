@@ -1,8 +1,12 @@
+using System.Text;
 using JobFinder.Server.Helpers;
 using JobFinder.Server.Parsers;
 using JobFinder.Server.Persistence;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,7 +15,34 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(opt =>
+{
+    opt.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer",
+    });
+
+    opt.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Name = "Bearer",
+                In = ParameterLocation.Header,
+                Reference = new OpenApiReference
+                {
+                    Id = "Bearer",
+                    Type = ReferenceType.SecurityScheme
+                }
+            },
+            new List<string>()
+        }
+    });
+
+});
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 var serverVersion = ServerVersion.AutoDetect(connectionString);
@@ -28,6 +59,9 @@ builder.Services.AddScoped<IParser, JobinjaParser>();
 builder.Services.AddScoped<IParser, QueraParser>();
 builder.Services.AddScoped<IParser, JobvisionParser>();
 
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<CurrentUserHelper>();
+
 builder.Services.AddHttpClient("Default", opt =>
 {
     opt.Timeout = TimeSpan.FromSeconds(5);
@@ -43,6 +77,24 @@ builder.Services.AddIdentityCore<IdentityUser>(conf =>
     conf.Password.RequiredLength = 3;
 })
 .AddEntityFrameworkStores<ApplicationDbContext>();
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"] ?? throw new Exception("jwt key not set"))),
+        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+        ValidateIssuer = true,
+        ValidAudience = builder.Configuration["Jwt:Audience"],
+        ValidateAudience = true
+    };
+});
+
+builder.Services.AddAuthorization();
 
 var app = builder.Build();
 

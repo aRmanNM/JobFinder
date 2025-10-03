@@ -8,6 +8,8 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace JobFinder.Server.Controllers;
 
+[ApiController]
+[Route("[controller]")]
 public class AuthController : ControllerBase
 {
     private readonly UserManager<IdentityUser> _userManager;

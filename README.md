@@ -12,7 +12,7 @@ TODOs:
     - [x] add route caching in client side
     - [x] sync bookmark sign between search and bookmark page
     - [x] fix bookmark indicator sync when caching router
-    - [ ] actually store bookmarks (requires persistence and user authentication)
+    - [x] actually store bookmarks (requires persistence and user authentication)
 - [x] simple authentication with jwt tokens (persistence with efcore+mysql)
 - [ ] show toasts
     - [ ] when bookmarked
