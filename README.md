@@ -14,11 +14,14 @@ TODOs:
     - [x] fix bookmark indicator sync when caching router
     - [x] actually store bookmarks (requires persistence and user authentication)
 - [x] simple authentication with jwt tokens (persistence with efcore+mysql)
+- [ ] dark/light modes
+- [ ] multi-language
 - [ ] show toasts
     - [ ] when bookmarked
     - [ ] empty query
     - [ ] errors
 - [x] choose search source
+- [x] bottom navbar
 - [ ] add rate limit
 - [x] show ad description modal
 - [ ] stats api
