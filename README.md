@@ -14,6 +14,7 @@ TODOs:
     - [x] fix bookmark indicator sync when caching router
     - [x] actually store bookmarks (requires persistence and user authentication)
 - [x] simple authentication with jwt tokens (persistence with efcore+mysql)
+- [x] add auth components and route guard
 - [ ] dark/light modes
 - [ ] multi-language
 - [ ] show toasts

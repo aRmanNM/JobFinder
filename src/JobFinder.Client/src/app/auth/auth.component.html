@@ -1,0 +1,37 @@
+<div class="auth-container">
+  <h2>{{ isRegisterMode ? 'ثبت نام' : 'ورود' }}</h2>
+
+  <form [formGroup]="authForm" (ngSubmit)="submit()">
+    <!-- Username -->
+    <div class="field">
+      <label for="username">نام کاربری</label>
+      <input id="username" type="text" pInputText formControlName="username" />
+      <small *ngIf="authForm.get('username')?.touched && authForm.get('username')?.invalid">
+        نام کاربری ضروری است
+      </small>
+    </div>
+
+    <!-- Password -->
+    <div class="field">
+      <label for="password">رمز عبور</label>
+      <input id="password" type="password" pPassword formControlName="password" [feedback]="false" />
+      <small *ngIf="authForm.get('password')?.touched && authForm.get('password')?.invalid">
+        رمز عبور ضروری است
+      </small>
+    </div>
+
+    <!-- Confirm Password (Register only) -->
+    <div class="field" *ngIf="isRegisterMode">
+      <label for="confirmPassword">تایید رمز عبور</label>
+      <input id="confirmPassword" type="password" pPassword formControlName="confirmPassword" [feedback]="false" />
+    </div>
+
+    <button pButton type="submit" label="{{ isRegisterMode ? 'ثبت نام' : 'ورود' }}"></button>
+  </form>
+
+  <p class="toggle-mode">
+    <a (click)="toggleMode()">
+      {{ isRegisterMode ? 'ورود به سیستم' : 'ثبت نام' }}
+    </a>
+  </p>
+</div>

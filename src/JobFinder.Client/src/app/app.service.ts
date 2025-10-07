@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { map, Observable, ObservableLike } from 'rxjs';
 import { JobAd } from './interfaces/job-ad';
 
 @Injectable({
@@ -8,7 +8,7 @@ import { JobAd } from './interfaces/job-ad';
 })
 export class AppService {
   baseUrl: string = 'http://localhost:5156';
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   getAds(
     serviceName: string,
@@ -17,7 +17,7 @@ export class AppService {
   ): Observable<JobAd[]> {
     return this.http.get<JobAd[]>(
       this.baseUrl +
-        `/Ads/GetList?serviceName=${serviceName}&query=${query}&pageNumber=${pageNumber}`
+      `/Ads/GetList?serviceName=${serviceName}&query=${query}&pageNumber=${pageNumber}`
     );
   }
 
@@ -51,6 +51,31 @@ export class AppService {
       return bookmarks;
     } else {
       return bookmarks;
+    }
+  }
+
+  login(username: any, password: any): Observable<any> {
+    return this.http.post<any>(
+      this.baseUrl + `/Auth/Signin`, { username, password }
+    ).pipe(map(response => {
+      localStorage.setItem('token', response.token)
+    }));
+  }
+
+  register(username: any, password: any): Observable<any> {
+    return this.http.post<any>(
+      this.baseUrl + `/Auth/Signup`, { username, password }
+    ).pipe(map(response => {
+      localStorage.setItem('token', response.token)
+    }));
+  }
+
+  loggedIn(): boolean {
+    const token = localStorage.getItem('token');
+    if (token == null) {
+      return false;
+    } else {
+      return true;
     }
   }
 }
