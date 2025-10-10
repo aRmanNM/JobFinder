@@ -30,6 +30,12 @@ public class BookmarksController : ControllerBase
         bookmark.Id = 0;
         bookmark.CreatedAt = DateTimeOffset.Now;
 
+        var bookmarks = await _db.Bookmarks.AsNoTracking().Where(b => b.UserId == userId).ToListAsync();
+        var exists = bookmarks.Any(b => b.Content.Id == bookmark.Content.Id);
+
+        if (exists)
+            return Ok();
+
         _db.Bookmarks.Add(bookmark);
         await _db.SaveChangesAsync(cancellationToken);
 

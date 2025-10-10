@@ -1,14 +1,14 @@
-@for (ad of bookmarks; track ad.id) {
+@for (bookmark of bookmarks; track bookmark.id) {
 <p-card>
   <div class="card-content">
     <div class="card-image">
-      <img src="{{ ad.logoUrl }}" alt="" />
+      <img src="{{ bookmark.content.logoUrl }}" alt="" />
     </div>
     <div class="card-details">
-      <p style="font-weight: bold;">{{ ad.title }}</p>
-      <p>{{ ad.company ?? "-" }}</p>
-      <p>{{ ad.location ?? "-" }}</p>
-      <p style="font-size: small">{{ ad.dateIdentifier }}</p>
+      <p style="font-weight: bold;">{{ bookmark.content.title }}</p>
+      <p>{{ bookmark.content.company ?? "-" }}</p>
+      <p>{{ bookmark.content.location ?? "-" }}</p>
+      <p style="font-size: small">{{ bookmark.content.dateIdentifier }}</p>
     </div>
     <div class="card-actions">
       <p-button
@@ -17,7 +17,7 @@
         [rounded]="true"
         [text]="true"
         severity="secondary"
-        (click)="removeBookmark(ad)"
+        (click)="removeBookmark(bookmark.id)"
       />
       <p-button
         size="small"
@@ -25,12 +25,12 @@
         [rounded]="true"
         [text]="true"
         severity="info"
-        (click)="showModal(ad.title, ad.title, ad.url)"
+        (click)="showModal(bookmark.content.title, bookmark.content.title, bookmark.content.url)"
       />
       <a
         size="small"
         pButton
-        [href]="ad.url"
+        [href]="bookmark.content.url"
         icon="pi pi-external-link"
         class="p-button-rounded p-button-text"
         target="_blank"

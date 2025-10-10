@@ -1,9 +1,9 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { AppService } from '../app.service';
-import { JobAd } from '../interfaces/job-ad';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
+import { Bookmark } from '../interfaces/bookmark';
 
 @Component({
   selector: 'app-bookmarks',
@@ -11,7 +11,7 @@ import { DialogModule } from 'primeng/dialog';
   templateUrl: './bookmarks.component.html',
 })
 export class BookmarksComponent implements OnInit {
-  bookmarks: JobAd[] = [];
+  bookmarks: Bookmark[] = [];
 
   modalVisible: boolean = false;
   modalContent: string = '';
@@ -24,7 +24,11 @@ export class BookmarksComponent implements OnInit {
   }
 
   getBookmarks() {
-    this.bookmarks = this.appService.getBookmarks();
+    this.appService.getBookmarks().subscribe((res) => {
+      this.bookmarks = res;
+    }, err => {
+      alert("error getting bookmark data");
+    });
   }
 
   showModal(serviceName: string, title: string | null, url: string | null) {
@@ -42,8 +46,9 @@ export class BookmarksComponent implements OnInit {
     });
   }
 
-  removeBookmark(ad: JobAd) {
-    this.appService.removeBookmark(ad);
-    this.getBookmarks();
+  removeBookmark(id: number) {
+    this.appService.removeBookmark(id).subscribe(() => {
+      this.getBookmarks();
+    })
   }
 }

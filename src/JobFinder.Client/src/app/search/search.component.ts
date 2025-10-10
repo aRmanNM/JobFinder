@@ -15,7 +15,8 @@ import { DialogModule } from 'primeng/dialog';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { JobAd } from '../interfaces/job-ad';
 import { NavigationEnd, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { firstValueFrom, Subscription } from 'rxjs';
+import { Bookmark } from '../interfaces/bookmark';
 
 @Component({
   selector: 'app-search',
@@ -82,9 +83,9 @@ export class SearchComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.sourcesSnapshot = this.sources;
 
-    this.sub = this.router.events.subscribe((event) => {
+    this.sub = this.router.events.subscribe(async (event) => {
       if (event instanceof NavigationEnd) {
-        const bookmarks = this.getBookmarks();
+        const bookmarks = await this.getBookmarks();
         this.sources.forEach((s) => {
           s.ads.forEach((ad) => {
             if (bookmarks.find((b) => b.id == ad.id)) {
@@ -107,9 +108,9 @@ export class SearchComponent implements OnInit, OnDestroy {
       s.pageNumber = 1; // reset page number
       this.appService
         .getAds(s.title, this.query, s.pageNumber)
-        .subscribe((res: JobAd[]) => {
+        .subscribe(async (res: JobAd[]) => {
           this.isLoading = false;
-          const bookmarks = this.getBookmarks();
+          const bookmarks = await this.getBookmarks();
           res.forEach((ad) => {
             if (bookmarks.find((b) => b.id == ad.id)) {
               ad.bookmarked = true;
@@ -134,9 +135,9 @@ export class SearchComponent implements OnInit, OnDestroy {
       source.pageNumber++;
       this.appService
         .getAds(serviceName, query, source.pageNumber)
-        .subscribe((res: JobAd[]) => {
+        .subscribe(async (res: JobAd[]) => {
           this.isLoading = false;
-          const bookmarks = this.getBookmarks();
+          const bookmarks = await this.getBookmarks();
           res.forEach((ad) => {
             if (bookmarks.find((b) => b.id == ad.id)) {
               ad.bookmarked = true;
@@ -165,12 +166,23 @@ export class SearchComponent implements OnInit, OnDestroy {
     });
   }
 
-  bookmarkAd(ad: JobAd) {
-    this.appService.addBookmark(ad);
-    ad.bookmarked = true;
+  bookmarkAd(ad: JobAd, note: string = "") {
+    const bookmark: Bookmark = {
+      id: 0,
+      userId: "",
+      content: ad,
+      note: note,
+      createdAt: null,
+      lastEditAt: null,
+    }
+
+    this.appService.addBookmark(bookmark).subscribe(res => {
+      ad.bookmarked = true;
+    });
   }
 
-  getBookmarks(): JobAd[] {
-    return this.appService.getBookmarks();
+  async getBookmarks(): Promise<JobAd[]> {
+    const bookmarks = await firstValueFrom(this.appService.getBookmarks());
+    return bookmarks.map(b => b.content);
   }
 }

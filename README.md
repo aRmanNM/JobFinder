@@ -13,6 +13,8 @@ TODOs:
     - [x] sync bookmark sign between search and bookmark page
     - [x] fix bookmark indicator sync when caching router
     - [x] actually store bookmarks (requires persistence and user authentication)
+    - [x] client changes to use bookmark api
+    - [ ] remove bookmark from search list
 - [x] simple authentication with jwt tokens (persistence with efcore+mysql)
 - [x] add auth components and route guard
 - [ ] dark/light modes
@@ -21,6 +23,7 @@ TODOs:
     - [ ] when bookmarked
     - [ ] empty query
     - [ ] errors
+- [ ] add global http loading
 - [x] choose search source
 - [x] bottom navbar
 - [ ] add rate limit

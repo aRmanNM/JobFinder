@@ -6,8 +6,9 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 
 import { providePrimeNG } from 'primeng/config';
 import Aura from '@primeuix/themes/aura';
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { CustomReuseStrategy } from './extensions/reuse-strategy';
+import { JwtInterceptor } from './extensions/jwt.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -15,7 +16,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     { provide: RouteReuseStrategy, useClass: CustomReuseStrategy },
     provideAnimationsAsync(),
-    provideHttpClient(),
+    provideHttpClient(withInterceptors([JwtInterceptor])),
     providePrimeNG({
       theme: {
         preset: Aura,

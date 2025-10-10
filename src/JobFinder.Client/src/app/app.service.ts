@@ -1,13 +1,17 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map, Observable, ObservableLike } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { JobAd } from './interfaces/job-ad';
+import { Bookmark } from './interfaces/bookmark';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AppService {
   baseUrl: string = 'http://localhost:5156';
+  jwtHelper = new JwtHelperService();
+
   constructor(private http: HttpClient) { }
 
   getAds(
@@ -27,31 +31,22 @@ export class AppService {
     );
   }
 
-  getBookmarks(): JobAd[] {
-    var ads: JobAd[] = JSON.parse(localStorage.getItem('bookamrks') ?? '[]');
-    return ads;
+  getBookmarks(): Observable<Bookmark[]> {
+    return this.http.get<Bookmark[]>(
+      this.baseUrl + `/Bookmarks`
+    );
   }
 
-  addBookmark(ad: JobAd): JobAd[] {
-    let bookmarks = this.getBookmarks();
-    if (bookmarks.find((a) => a.id == ad.id) == undefined) {
-      bookmarks.push(ad);
-      localStorage.setItem('bookamrks', JSON.stringify(bookmarks));
-      return bookmarks;
-    } else {
-      return bookmarks;
-    }
+  addBookmark(bookmark: Bookmark): Observable<Bookmark> {
+    return this.http.post<Bookmark>(
+      this.baseUrl + `/Bookmarks`, bookmark
+    );
   }
 
-  removeBookmark(ad: JobAd): JobAd[] {
-    let bookmarks = this.getBookmarks();
-    if (bookmarks.find((a) => a.id == ad.id) != undefined) {
-      bookmarks = bookmarks.filter((a) => a.id != ad.id);
-      localStorage.setItem('bookamrks', JSON.stringify(bookmarks));
-      return bookmarks;
-    } else {
-      return bookmarks;
-    }
+  removeBookmark(id: number) {
+    return this.http.delete(
+      this.baseUrl + `/Bookmarks?bookmarkId=${id}`
+    );
   }
 
   login(username: any, password: any): Observable<any> {
@@ -72,10 +67,9 @@ export class AppService {
 
   loggedIn(): boolean {
     const token = localStorage.getItem('token');
-    if (token == null) {
-      return false;
-    } else {
-      return true;
+    if (token) {
+      return !this.jwtHelper.isTokenExpired(token);
     }
+    return false;
   }
 }
