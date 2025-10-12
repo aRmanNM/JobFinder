@@ -1,3 +1,10 @@
+@if (isEmpty == true) {
+  <div class="screen-centered">
+    <p>هیچ آگهی بوکمارک نشده است</p>
+    <p>از تب جستجو، آگهی‌های مورد نظر خود را بوکمارک کنید</p>
+</div>
+}
+
 @for (bookmark of bookmarks; track bookmark.id) {
 <p-card>
   <div class="card-content">

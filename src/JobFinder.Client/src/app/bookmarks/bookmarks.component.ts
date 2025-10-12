@@ -9,9 +9,17 @@ import { Bookmark } from '../interfaces/bookmark';
   selector: 'app-bookmarks',
   imports: [CardModule, ButtonModule, DialogModule],
   templateUrl: './bookmarks.component.html',
+  styles: `
+.screen-centered {
+  text-align: center;
+  margin-top: 100px;
+}
+  `
 })
 export class BookmarksComponent implements OnInit {
   bookmarks: Bookmark[] = [];
+
+  isEmpty: any = undefined;
 
   modalVisible: boolean = false;
   modalContent: string = '';
@@ -26,6 +34,9 @@ export class BookmarksComponent implements OnInit {
   getBookmarks() {
     this.appService.getBookmarks().subscribe((res) => {
       this.bookmarks = res;
+      if (this.bookmarks.length == 0) {
+        this.isEmpty = true;
+      }
     }, err => {
       alert("error getting bookmark data");
     });
@@ -47,6 +58,7 @@ export class BookmarksComponent implements OnInit {
   }
 
   removeBookmark(id: number) {
+    this.isEmpty = undefined;
     this.appService.removeBookmark(id).subscribe(() => {
       this.getBookmarks();
     })
