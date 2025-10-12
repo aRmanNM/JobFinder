@@ -12,10 +12,10 @@ namespace JobFinder.Server.Controllers;
 [Route("[controller]")]
 public class AuthController : ControllerBase
 {
-    private readonly UserManager<IdentityUser> _userManager;
+    private readonly UserManager<AppUser> _userManager;
     private readonly IConfiguration _configuration;
 
-    public AuthController(UserManager<IdentityUser> userManager, IConfiguration configuration)
+    public AuthController(UserManager<AppUser> userManager, IConfiguration configuration)
     {
         _userManager = userManager;
         _configuration = configuration;
@@ -24,9 +24,10 @@ public class AuthController : ControllerBase
     [HttpPost("Signup")]
     public async Task<IActionResult> Signup(UserAuthModel model)
     {
-        var user = new IdentityUser
+        var user = new AppUser
         {
             UserName = model.UserName,
+            JoinedAt = DateTimeOffset.Now,
         };
 
         var res = await _userManager.CreateAsync(user, model.Password);
@@ -58,7 +59,7 @@ public class AuthController : ControllerBase
         });
     }
 
-    private string GenerateToken(IdentityUser user)
+    private string GenerateToken(AppUser user)
     {
         var claims = new List<Claim>
         {

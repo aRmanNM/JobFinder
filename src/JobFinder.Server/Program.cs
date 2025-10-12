@@ -1,5 +1,6 @@
 using System.Text;
 using JobFinder.Server.Helpers;
+using JobFinder.Server.Models;
 using JobFinder.Server.Parsers;
 using JobFinder.Server.Persistence;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -68,7 +69,7 @@ builder.Services.AddHttpClient("Default", opt =>
     opt.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (X11; Linux x86_64; rv:128.0) Gecko/20100101 Firefox/128.0");
 });
 
-builder.Services.AddIdentityCore<IdentityUser>(conf =>
+builder.Services.AddIdentityCore<AppUser>(conf =>
 {
     conf.Password.RequireDigit = false;
     conf.Password.RequireLowercase = false;
