@@ -10,6 +10,7 @@ public class ApplicationDbContext : IdentityDbContext<AppUser, IdentityRole, str
 {
     public DbSet<Bookmark> Bookmarks { get; set; } = null!;
     public DbSet<AppFile> AppFiles { get; set; } = null!;
+    public DbSet<Subscription> Subscriptions { get; set; } = null!;
 
     public ApplicationDbContext(DbContextOptions options) : base(options)
     {
@@ -30,11 +31,6 @@ public class ApplicationDbContext : IdentityDbContext<AppUser, IdentityRole, str
         builder.Entity<AppUser>(eb =>
         {
             eb.Property(b => b.Tags)
-                .HasConversion(
-                    v => JsonConvert.SerializeObject(v),
-                    v => JsonConvert.DeserializeObject<List<string>>(v) ?? new List<string>());
-
-            eb.Property(b => b.RecentQueries)
                 .HasConversion(
                     v => JsonConvert.SerializeObject(v),
                     v => JsonConvert.DeserializeObject<List<string>>(v) ?? new List<string>());

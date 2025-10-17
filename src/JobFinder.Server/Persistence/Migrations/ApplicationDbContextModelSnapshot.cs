@@ -91,10 +91,6 @@ namespace JobFinder.Server.Persistence.Migrations
                     b.Property<string>("PictureUid")
                         .HasColumnType("longtext");
 
-                    b.Property<string>("RecentQueries")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
                     b.Property<int>("SearchCount")
                         .HasColumnType("int");
 
@@ -152,6 +148,69 @@ namespace JobFinder.Server.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Bookmarks");
+                });
+
+            modelBuilder.Entity("JobFinder.Server.Models.RecentQuery", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AppUserId")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Query")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppUserId");
+
+                    b.ToTable("RecentQuery");
+                });
+
+            modelBuilder.Entity("JobFinder.Server.Models.Subscription", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTimeOffset?>("PaidAt")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("PaymentId")
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("SearchCount")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Subscriptions");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -286,6 +345,24 @@ namespace JobFinder.Server.Persistence.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("JobFinder.Server.Models.RecentQuery", b =>
+                {
+                    b.HasOne("JobFinder.Server.Models.AppUser", null)
+                        .WithMany("RecentQueries")
+                        .HasForeignKey("AppUserId");
+                });
+
+            modelBuilder.Entity("JobFinder.Server.Models.Subscription", b =>
+                {
+                    b.HasOne("JobFinder.Server.Models.AppUser", "User")
+                        .WithMany("Subscriptions")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -335,6 +412,13 @@ namespace JobFinder.Server.Persistence.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("JobFinder.Server.Models.AppUser", b =>
+                {
+                    b.Navigation("RecentQueries");
+
+                    b.Navigation("Subscriptions");
                 });
 #pragma warning restore 612, 618
         }

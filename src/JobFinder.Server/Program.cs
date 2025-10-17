@@ -77,7 +77,9 @@ builder.Services.AddIdentityCore<AppUser>(conf =>
     conf.Password.RequireUppercase = false;
     conf.Password.RequiredLength = 3;
 })
-.AddEntityFrameworkStores<ApplicationDbContext>();
+.AddEntityFrameworkStores<ApplicationDbContext>()
+.AddSignInManager<SignInManager<AppUser>>()
+.AddUserManager<UserManager<AppUser>>();
 
 builder.Services.AddAuthentication(options =>
 {

@@ -9,6 +9,7 @@ namespace JobFinder.Server.Controllers;
 
 [ApiController]
 [Route("[controller]")]
+[Authorize]
 public class BookmarksController : ControllerBase
 {
     private readonly ApplicationDbContext _db;
@@ -20,7 +21,6 @@ public class BookmarksController : ControllerBase
         _currentUser = currentUser;
     }
 
-    [Authorize]
     [HttpPost]
     public async Task<IActionResult> Create(Bookmark bookmark, CancellationToken cancellationToken)
     {
@@ -42,7 +42,6 @@ public class BookmarksController : ControllerBase
         return Ok(bookmark);
     }
 
-    [Authorize]
     [HttpPut]
     public async Task<IActionResult> Update(Bookmark bookmark, CancellationToken cancellationToken)
     {
@@ -60,7 +59,6 @@ public class BookmarksController : ControllerBase
         return Ok(currentBookmark);
     }
 
-    [Authorize]
     [HttpDelete]
     public async Task<IActionResult> Delete(int bookmarkId, CancellationToken cancellationToken)
     {

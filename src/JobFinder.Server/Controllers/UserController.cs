@@ -1,5 +1,6 @@
 using JobFinder.Server.Helpers;
 using JobFinder.Server.Models;
+using JobFinder.Server.Persistence;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -15,7 +16,8 @@ public class UserController : ControllerBase
     private readonly CurrentUserHelper _currentUserHelper;
 
     public UserController(
-        UserManager<AppUser> userManager, CurrentUserHelper currentUserHelper)
+        UserManager<AppUser> userManager,
+        CurrentUserHelper currentUserHelper)
     {
         _userManager = userManager;
         _currentUserHelper = currentUserHelper;
