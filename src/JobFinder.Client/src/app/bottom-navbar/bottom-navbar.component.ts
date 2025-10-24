@@ -9,7 +9,7 @@ import { TabMenuModule } from 'primeng/tabmenu';
   encapsulation: ViewEncapsulation.None,
   styles: [`
     .bottom-navbar {
-      position: fixed;
+      position: sticky;
       bottom: 0;
       left: 0;
       right: 0;

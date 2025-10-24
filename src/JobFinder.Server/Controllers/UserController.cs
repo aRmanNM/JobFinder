@@ -1,6 +1,5 @@
 using JobFinder.Server.Helpers;
 using JobFinder.Server.Models;
-using JobFinder.Server.Persistence;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

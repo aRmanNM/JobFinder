@@ -14,5 +14,5 @@ public class CurrentUserHelper
     public string UserId =>
         _contextAccessor.HttpContext?.User?
             .FindFirstValue(ClaimTypes.NameIdentifier)
-                ?? throw new Exception("no principal found");
+                ?? string.Empty;
 }

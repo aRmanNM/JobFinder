@@ -1,7 +1,6 @@
 using JobFinder.Server.Helpers;
 using JobFinder.Server.Models;
 using JobFinder.Server.Parsers;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,47 +8,72 @@ namespace JobFinder.Server.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-[Authorize]
 public class AdsController : ControllerBase
 {
     private readonly ILogger<AdsController> _logger;
     private readonly IParserFactory _parserFactory;
-    private readonly UserManager<AppUser> _userManager;
     private readonly CurrentUserHelper _currentUserHelper;
+    private readonly UserManager<AppUser> _userManager;
 
     public AdsController(
         ILogger<AdsController> logger,
         IParserFactory parserFactory,
-        UserManager<AppUser> userManager,
-        CurrentUserHelper currentUserHelper)
+        CurrentUserHelper currentUserHelper,
+        UserManager<AppUser> userManager)
     {
         _logger = logger;
         _parserFactory = parserFactory;
-        _userManager = userManager;
         _currentUserHelper = currentUserHelper;
+        _userManager = userManager;
     }
 
     [HttpGet("GetList")]
-    public async Task<IActionResult> GetAds(string serviceName, string query, int pageNumber)
+    public async Task<IActionResult> GetAds([FromQuery] List<string> serviceNames, string query, int pageNumber)
     {
         if (string.IsNullOrEmpty(query))
             return Ok(new List<JobAd>());
 
-        await ValidateSearchCount();
-
-        var parser = _parserFactory.GetParser(serviceName);
-
-        var ads = await parser.GetJobAds(query, pageNumber);
-
-        ads.ForEach(ad =>
+        var res = new List<SourceAds>();
+        foreach (var serviceName in serviceNames)
         {
-            ad.Id = IdHelper.GetId(ad.Url);
-            ad.ServiceName = serviceName;
-        });
+            var parser = _parserFactory.GetParser(serviceName);
 
-        await ProcessSearchCount();
+            var ads = await parser.GetJobAds(query, pageNumber);
 
-        return Ok(ads);
+            ads.ForEach(ad =>
+            {
+                ad.Id = IdHelper.GetId(ad.Url);
+                ad.ServiceName = serviceName;
+            });
+
+            res.Add(new SourceAds
+            {
+                Ads = ads,
+                ServiceName = serviceName,
+                PageNumber = pageNumber,
+            });
+        }
+
+        var userId = _currentUserHelper.UserId;
+        Console.WriteLine($"**** {userId}");
+        if (!string.IsNullOrEmpty(userId))
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user != null)
+            {
+                user.SearchCount++;
+                user.RecentQueries.Add(new RecentQuery
+                {
+                    UserId = userId,
+                    Query = query,
+                    CreatedAt = DateTimeOffset.Now,
+                });
+
+                await _userManager.UpdateAsync(user);
+            }
+        }
+
+        return Ok(res);
     }
 
     [HttpGet("GetDetail")]
@@ -60,32 +84,5 @@ public class AdsController : ControllerBase
         var adDetail = await parser.GetJobAdDetail(url);
 
         return Ok(adDetail);
-    }
-
-    private async Task ValidateSearchCount()
-    {
-        var userId = _currentUserHelper.UserId;
-
-        var user = await _userManager.FindByIdAsync(userId);
-
-        if (user == null)
-            throw new Exception("user not found");
-
-        if (user.SearchCount == 0)
-            throw new Exception("user search count is zero");
-    }
-
-    private async Task ProcessSearchCount()
-    {
-        var userId = _currentUserHelper.UserId;
-
-        var user = await _userManager.FindByIdAsync(userId);
-
-        if (user == null)
-            throw new Exception("user not found");
-
-        user.SearchCount--;
-
-        await _userManager.UpdateAsync(user);
     }
 }

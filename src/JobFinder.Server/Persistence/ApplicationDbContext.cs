@@ -10,7 +10,6 @@ public class ApplicationDbContext : IdentityDbContext<AppUser, IdentityRole, str
 {
     public DbSet<Bookmark> Bookmarks { get; set; } = null!;
     public DbSet<AppFile> AppFiles { get; set; } = null!;
-    public DbSet<Subscription> Subscriptions { get; set; } = null!;
 
     public ApplicationDbContext(DbContextOptions options) : base(options)
     {

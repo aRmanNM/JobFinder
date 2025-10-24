@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
-import { JobAd } from './interfaces/job-ad';
 import { Bookmark } from './interfaces/bookmark';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { SourceAds } from './interfaces/source-ads';
 
 @Injectable({
   providedIn: 'root',
@@ -15,13 +15,13 @@ export class AppService {
   constructor(private http: HttpClient) { }
 
   getAds(
-    serviceName: string,
+    serviceNames: string[],
     query: string,
     pageNumber: number
-  ): Observable<JobAd[]> {
-    return this.http.get<JobAd[]>(
+  ): Observable<SourceAds[]> {
+    return this.http.get<SourceAds[]>(
       this.baseUrl +
-      `/Ads/GetList?serviceName=${serviceName}&query=${query}&pageNumber=${pageNumber}`
+      `/Ads/GetList`, { params: { pageNumber: pageNumber, query: query, serviceNames: serviceNames } }
     );
   }
 

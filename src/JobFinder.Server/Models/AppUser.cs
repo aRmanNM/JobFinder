@@ -9,5 +9,4 @@ public class AppUser : IdentityUser
     public int SearchCount { get; set; }
     public List<string> Tags { get; set; } = new List<string>();
     public List<RecentQuery> RecentQueries { get; set; } = new List<RecentQuery>();
-    public List<Subscription> Subscriptions { get; set; } = new List<Subscription>();
 }

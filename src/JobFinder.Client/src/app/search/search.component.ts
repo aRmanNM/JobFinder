@@ -100,33 +100,46 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   getAds() {
+    let bookmarks: JobAd[] = [];
     this.isLoading = true;
     this.activeTab = null;
     this.showTabs = false;
     this.sourcesSnapshot = this.sources.filter((s) => s.isEnabled == true);
-    this.sourcesSnapshot.forEach((s) => {
-      s.pageNumber = 1; // reset page number
-      this.appService
-        .getAds(s.title, this.query, s.pageNumber)
-        .subscribe(async (res: JobAd[]) => {
-          this.isLoading = false;
-          const bookmarks = await this.getBookmarks();
-          res.forEach((ad) => {
-            if (bookmarks.find((b) => b.id == ad.id)) {
-              ad.bookmarked = true;
-            }
-          });
+    this.appService
+      .getAds(this.sourcesSnapshot.map(ss => ss.title), this.query, 1)
+      .subscribe(async res => {
+        this.isLoading = false;
+        if (this.appService.loggedIn()) {
+          bookmarks = await this.getBookmarks();
+        }
 
-          if (this.activeTab == null) {
-            this.activeTab = s.title;
+        res.forEach((source) => {
+
+          if (this.appService.loggedIn()) {
+            source.ads.forEach(ad => {
+              if (bookmarks.find((b) => b.id == ad.id)) {
+                ad.bookmarked = true;
+              }
+            })
           }
-          this.showTabs = true;
-          s.ads = res;
+
+          let sourceSnapshot = this.sourcesSnapshot.find(ss => ss.title == source.serviceName);
+          if (sourceSnapshot) {
+            sourceSnapshot.ads = source.ads;
+            sourceSnapshot.pageNumber = 1; // reset page number
+            if (this.activeTab == null) {
+              this.activeTab = source.serviceName;
+            }
+          }
         });
-    });
+
+
+        this.showTabs = true;
+      });
   }
 
   loadMore(serviceName: string, query: string) {
+    let bookmarks: JobAd[] = [];
     this.isLoading = true;
     let source = this.sourcesSnapshot.find((s) => s.title == serviceName);
     if (source == null) {
@@ -134,17 +147,29 @@ export class SearchComponent implements OnInit, OnDestroy {
     } else {
       source.pageNumber++;
       this.appService
-        .getAds(serviceName, query, source.pageNumber)
-        .subscribe(async (res: JobAd[]) => {
+        .getAds([serviceName], query, source.pageNumber)
+        .subscribe(async res => {
           this.isLoading = false;
-          const bookmarks = await this.getBookmarks();
-          res.forEach((ad) => {
-            if (bookmarks.find((b) => b.id == ad.id)) {
-              ad.bookmarked = true;
+
+          if (this.appService.loggedIn()) {
+            bookmarks = await this.getBookmarks();
+          }
+
+          res.forEach((source) => {
+
+            if (this.appService.loggedIn()) {
+              source.ads.forEach(ad => {
+                if (bookmarks.find((b) => b.id == ad.id)) {
+                  ad.bookmarked = true;
+                }
+              })
+            }
+
+            let sourceSnapshot = this.sourcesSnapshot.find(ss => ss.title == source.serviceName);
+            if (sourceSnapshot) {
+              sourceSnapshot.ads.push(...source.ads);
             }
           });
-
-          source.ads.push(...res);
         });
     }
   }
