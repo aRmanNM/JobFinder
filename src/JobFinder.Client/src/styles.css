@@ -7,13 +7,98 @@
   src: url("./Yekan.ttf");
 }
 
-body, html {
+body,
+html {
   font-family: "font-yekan";
+  height: 100%;
+  margin: 0;
 }
 
-.top-bar {
+app-root {
+  display: flex;
+  /* Essential for proper width/height application */
+  height: 100vh;
+  /* Make the app fill the viewport height */
+  width: 100vw;
+  /* Make the app fill the viewport width */
+  margin: 0;
+  /* Remove default body margins */
+  box-sizing: border-box;
+  /* Include padding and border in element's total width and height */
+}
+
+p-menubar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  padding: 10px;
+  /* height: 56px; */
+}
+
+.bottom-navbar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 56px;
+  background-color: #fff;
+  border-top: 1px solid #ddd;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  z-index: 1000;
+}
+
+.my-content {
+  width: 100%;
+  padding-top: 90px;
+  padding-bottom: 40px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+@media only screen and (min-width: 768px) {
+  .my-content {
+    max-width: 700px;
+    /* margin: auto; */
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: auto;
+  }
+
+  p-menubar {
+    width: 750px;
+    margin: auto;
+  }
+
+  .bottom-navbar {
+    width: 750px;
+    margin: auto;
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+  }
+}
+
+.nav-item {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+  color: #555;
+  font-size: 12px;
+}
+
+.nav-item i {
+  font-size: 1.4rem;
+}
+
+.nav-item.active {
+  color: #007ad9;
+  /* PrimeNG primary color */
 }
 
 .top-bar h3,
@@ -28,10 +113,6 @@ p {
 .search-container .p-inputtext {
   width: 100%;
   margin-left: 5px;
-}
-
-.p-menubar {
-  margin-bottom: 10px;
 }
 
 .p-tab {
@@ -88,5 +169,4 @@ a.p-button {
   text-align: center;
 }
 
-.p-progress-spinner {
-}
+.p-progress-spinner {}
