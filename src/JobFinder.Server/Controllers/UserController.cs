@@ -3,6 +3,7 @@ using JobFinder.Server.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace JobFinder.Server.Controllers;
 
@@ -25,7 +26,8 @@ public class UserController : ControllerBase
     [HttpPut("Profile")]
     public async Task<IActionResult> UpdateProfile(ProfileModel model)
     {
-        var user = await _userManager.FindByIdAsync(_currentUserHelper.UserId);
+        var user = await _userManager.Users
+            .FirstOrDefaultAsync(u => u.Id == _currentUserHelper.UserId);
 
         if (user == null)
             return NotFound();
@@ -40,7 +42,10 @@ public class UserController : ControllerBase
     [HttpGet("Profile")]
     public async Task<IActionResult> GetProfile()
     {
-        var user = await _userManager.FindByIdAsync(_currentUserHelper.UserId);
+        var user = await _userManager.Users
+            .AsNoTracking()
+            .Include(u => u.RecentQueries)
+            .FirstOrDefaultAsync(u => u.Id == _currentUserHelper.UserId);
 
         if (user == null)
             return NotFound();

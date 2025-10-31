@@ -170,3 +170,19 @@ a.p-button {
 }
 
 .p-progress-spinner {}
+
+.profile-avatar {
+  display: block;
+  margin: auto;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  border: 2px solid grey;
+}
+
+.profile-counter {
+  text-align: center;
+  font-size: large;
+}

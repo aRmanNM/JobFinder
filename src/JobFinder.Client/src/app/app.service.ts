@@ -4,6 +4,7 @@ import { map, Observable } from 'rxjs';
 import { Bookmark } from './interfaces/bookmark';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { SourceAds } from './interfaces/source-ads';
+import { ProfileModel } from './interfaces/profile';
 
 @Injectable({
   providedIn: 'root',
@@ -13,6 +14,20 @@ export class AppService {
   jwtHelper = new JwtHelperService();
 
   constructor(private http: HttpClient) { }
+
+  getFile(uid: string) {
+    return this.http.get(
+      this.baseUrl +
+      `/Files`, { params: { uid }, responseType: 'blob' }
+    );
+  }
+
+  getProfile(): Observable<ProfileModel> {
+    return this.http.get<ProfileModel>(
+      this.baseUrl +
+      `/User/Profile`
+    );
+  }
 
   getAds(
     serviceNames: string[],

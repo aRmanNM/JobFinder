@@ -3,6 +3,7 @@ using JobFinder.Server.Models;
 using JobFinder.Server.Parsers;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace JobFinder.Server.Controllers;
 
@@ -55,10 +56,12 @@ public class AdsController : ControllerBase
         }
 
         var userId = _currentUserHelper.UserId;
-        Console.WriteLine($"**** {userId}");
         if (!string.IsNullOrEmpty(userId))
         {
-            var user = await _userManager.FindByIdAsync(userId);
+            var user = await _userManager.Users
+                .Include(u => u.RecentQueries)
+                .FirstOrDefaultAsync(u => u.Id == _currentUserHelper.UserId);
+
             if (user != null)
             {
                 user.SearchCount++;
