@@ -33,6 +33,7 @@ export class BookmarksComponent implements OnInit {
 
   getBookmarks() {
     this.appService.getBookmarks().subscribe((res) => {
+      // console.log("bookmarks: ", res);
       this.bookmarks = res;
       if (this.bookmarks.length == 0) {
         this.isEmpty = true;

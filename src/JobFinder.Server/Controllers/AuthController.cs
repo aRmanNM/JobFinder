@@ -28,7 +28,6 @@ public class AuthController : ControllerBase
         {
             UserName = model.UserName,
             JoinedAt = DateTimeOffset.Now,
-            SearchCount = 5,
         };
 
         var res = await _userManager.CreateAsync(user, model.Password);

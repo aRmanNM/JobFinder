@@ -1,6 +1,30 @@
 <!-- <p>{{profile | json}}</p> -->
 
-<div >
-    <img class="profile-avatar" src="{{ avatar }}" />
+<div>
+    @if (avatar) {
+        <img class="profile-avatar" src="{{ avatar }}"/>
+    }
+    @else {
+        <img class="profile-avatar" src="user.png"/>
+    }
 </div>
 <p class="profile-counter">{{ profile?.searchCount }}</p>
+
+@if (profile) {
+<p-table [value]="profile.recentQueries">
+  <ng-template #header>
+    <tr>
+      <th>عنوان</th>
+      <th>آخرین جستجو</th>
+      <th>تعداد</th>
+    </tr>
+  </ng-template>
+  <ng-template #body let-query>
+    <tr>
+      <td>{{ query.query }}</td>
+      <td>{{ query.createdAt | jalaliDate }}</td>
+      <td>{{ query.count }}</td>
+    </tr>
+  </ng-template>
+</p-table>
+}

@@ -54,14 +54,16 @@ p-menubar {
 .my-content {
   width: 100%;
   padding-top: 90px;
-  padding-bottom: 40px;
+  padding-bottom: 30px;
   padding-left: 10px;
   padding-right: 10px;
+
+  margin-bottom: auto;
 }
 
 @media only screen and (min-width: 768px) {
   .my-content {
-    max-width: 700px;
+    max-width: 600px;
     /* margin: auto; */
     margin-left: auto;
     margin-right: auto;
@@ -69,21 +71,22 @@ p-menubar {
   }
 
   p-menubar {
-    width: 750px;
+    width: 650px;
     margin: auto;
   }
 
   .bottom-navbar {
-    width: 750px;
+    width: 600px;
     margin: auto;
     border-left: 1px solid #ddd;
-    border-right: 1px solid #ddd;
     border-top-left-radius: 10px;
+    border-right: 1px solid #ddd;
     border-top-right-radius: 10px;
   }
 }
 
 .nav-item {
+  margin-top: 5px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -185,4 +188,5 @@ a.p-button {
 .profile-counter {
   text-align: center;
   font-size: large;
+  margin-bottom: 20px;
 }

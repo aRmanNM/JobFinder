@@ -31,13 +31,16 @@ import { Bookmark } from '../interfaces/bookmark';
     CardModule,
     CommonModule,
     DialogModule,
-    ProgressSpinnerModule
+    ProgressSpinnerModule,
   ],
   providers: [AppService],
   templateUrl: './search.component.html',
 })
 export class SearchComponent implements OnInit, OnDestroy {
-  constructor(private appService: AppService, private router: Router) { }
+  constructor(
+    private appService: AppService,
+    private router: Router
+  ) {}
 
   ngOnDestroy(): void {
     this.sub?.unsubscribe();
@@ -93,37 +96,45 @@ export class SearchComponent implements OnInit, OnDestroy {
             } else {
               ad.bookmarked = false;
             }
-          })
+          });
         });
       }
     });
   }
 
   getAds() {
+    if (!this.query) {
+      return;
+    }
     let bookmarks: JobAd[] = [];
     this.isLoading = true;
     this.activeTab = null;
     this.showTabs = false;
     this.sourcesSnapshot = this.sources.filter((s) => s.isEnabled == true);
     this.appService
-      .getAds(this.sourcesSnapshot.map(ss => ss.title), this.query, 1)
-      .subscribe(async res => {
+      .getAds(
+        this.sourcesSnapshot.map((ss) => ss.title),
+        this.query,
+        1
+      )
+      .subscribe(async (res) => {
         this.isLoading = false;
         if (this.appService.loggedIn()) {
           bookmarks = await this.getBookmarks();
         }
 
         res.forEach((source) => {
-
           if (this.appService.loggedIn()) {
-            source.ads.forEach(ad => {
+            source.ads.forEach((ad) => {
               if (bookmarks.find((b) => b.id == ad.id)) {
                 ad.bookmarked = true;
               }
-            })
+            });
           }
 
-          let sourceSnapshot = this.sourcesSnapshot.find(ss => ss.title == source.serviceName);
+          let sourceSnapshot = this.sourcesSnapshot.find(
+            (ss) => ss.title == source.serviceName
+          );
           if (sourceSnapshot) {
             sourceSnapshot.ads = source.ads;
             sourceSnapshot.pageNumber = 1; // reset page number
@@ -133,12 +144,14 @@ export class SearchComponent implements OnInit, OnDestroy {
           }
         });
 
-
         this.showTabs = true;
       });
   }
 
   loadMore(serviceName: string, query: string) {
+    if (!this.query) {
+      return;
+    }
     let bookmarks: JobAd[] = [];
     this.isLoading = true;
     let source = this.sourcesSnapshot.find((s) => s.title == serviceName);
@@ -148,7 +161,7 @@ export class SearchComponent implements OnInit, OnDestroy {
       source.pageNumber++;
       this.appService
         .getAds([serviceName], query, source.pageNumber)
-        .subscribe(async res => {
+        .subscribe(async (res) => {
           this.isLoading = false;
 
           if (this.appService.loggedIn()) {
@@ -156,16 +169,17 @@ export class SearchComponent implements OnInit, OnDestroy {
           }
 
           res.forEach((source) => {
-
             if (this.appService.loggedIn()) {
-              source.ads.forEach(ad => {
+              source.ads.forEach((ad) => {
                 if (bookmarks.find((b) => b.id == ad.id)) {
                   ad.bookmarked = true;
                 }
-              })
+              });
             }
 
-            let sourceSnapshot = this.sourcesSnapshot.find(ss => ss.title == source.serviceName);
+            let sourceSnapshot = this.sourcesSnapshot.find(
+              (ss) => ss.title == source.serviceName
+            );
             if (sourceSnapshot) {
               sourceSnapshot.ads.push(...source.ads);
             }
@@ -191,23 +205,29 @@ export class SearchComponent implements OnInit, OnDestroy {
     });
   }
 
-  bookmarkAd(ad: JobAd, note: string = "") {
+  bookmarkAd(ad: JobAd, note: string = '') {
+    if (!this.appService.loggedIn()) {
+      this.router.navigate(['/auth'], {
+        queryParams: { returnUrl: '/search' },
+      });
+    }
+
     const bookmark: Bookmark = {
       id: 0,
-      userId: "",
+      userId: '',
       content: ad,
       note: note,
       createdAt: null,
       lastEditAt: null,
-    }
+    };
 
-    this.appService.addBookmark(bookmark).subscribe(res => {
+    this.appService.addBookmark(bookmark).subscribe((res) => {
       ad.bookmarked = true;
     });
   }
 
   async getBookmarks(): Promise<JobAd[]> {
     const bookmarks = await firstValueFrom(this.appService.getBookmarks());
-    return bookmarks.map(b => b.content);
+    return bookmarks.map((b) => b.content);
   }
 }

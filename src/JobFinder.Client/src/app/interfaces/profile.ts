@@ -12,4 +12,5 @@ export interface RecentQuery {
     userId: string;
     query: string;
     createdAt: string;
+    count: number;
 }
