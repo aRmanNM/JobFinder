@@ -190,3 +190,8 @@ a.p-button {
   font-size: large;
   margin-bottom: 20px;
 }
+
+.p-card {
+  padding: 0px;
+  margin: 10px 0px;
+}
