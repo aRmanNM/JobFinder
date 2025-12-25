@@ -5,6 +5,6 @@ export interface Bookmark {
     note: string | null;
     content: JobAd;
     userId: string;
-    createdAt: string | null;
+    createdAt: string | Date | null;
     lastEditAt: string | null;
 }

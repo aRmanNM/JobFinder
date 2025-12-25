@@ -1,30 +1,42 @@
 @if (isEmpty == true) {
-  <div class="screen-centered">
-    <p>هیچ آگهی بوکمارک نشده است</p>
-    <p>از تب جستجو، آگهی‌های مورد نظر خود را بوکمارک کنید</p>
+<div class="screen-centered">
+  <p>هیچ آگهی بوکمارک نشده است</p>
+  <p>از تب جستجو، آگهی‌های مورد نظر خود را بوکمارک کنید</p>
 </div>
-}
-
-@for (bookmark of bookmarks; track bookmark.id) {
+} @for (bookmark of bookmarks; track bookmark.id) {
 <p-card>
   <div class="card-content">
     <div class="card-image">
       <img src="{{ bookmark.content.logoUrl }}" alt="" />
     </div>
     <div class="card-details">
-      <p style="font-weight: bold;">{{ bookmark.content.title }}</p>
+      <p style="font-weight: bold;">
+        {{ bookmark.content.title }}
+        <p-tag
+          value="{{ bookmark.content.serviceName | serviceName }}"
+          severity="secondary"
+        />
+      </p>
       <p>{{ bookmark.content.company ?? "-" }}</p>
       <p>{{ bookmark.content.location ?? "-" }}</p>
       <p style="font-size: small">{{ bookmark.content.dateIdentifier }}</p>
     </div>
     <div class="card-actions">
-      <p-button
+      <!-- <p-button
         size="small"
         icon="pi pi-bookmark-fill"
         [rounded]="true"
         [text]="true"
         severity="secondary"
         (click)="removeBookmark(bookmark.id)"
+      /> -->
+      <p-button
+        size="small"
+        icon="pi pi-pen-to-square"
+        [rounded]="true"
+        [text]="true"
+        severity="info"
+        (click)="showNoteModal(bookmark)"
       />
       <p-button
         size="small"
@@ -32,7 +44,13 @@
         [rounded]="true"
         [text]="true"
         severity="info"
-        (click)="showModal(bookmark.content.serviceName, bookmark.content.title, bookmark.content.url)"
+        (click)="
+          showDescModal(
+            bookmark.content.serviceName,
+            bookmark.content.title,
+            bookmark.content.url
+          )
+        "
       />
       <a
         size="small"
@@ -49,11 +67,36 @@
 }
 
 <p-dialog
-  header="{{ modalTitle }}"
   [modal]="true"
-  [(visible)]="modalVisible"
+  [header]="modalTitle"
   [style]="{ width: '50rem' }"
+  [(visible)]="descModalVisible"
   [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
 >
   <div [innerHTML]="modalContent"></div>
+  <div class="loadingIndicator">
+    <p-progress-spinner
+      *ngIf="modalIsLoading"
+      strokeWidth="8"
+      fill="transparent"
+      animationDuration=".5s"
+      [style]="{ width: '50px', height: '50px' }"
+    />
+  </div>
+</p-dialog>
+
+<p-dialog
+  header="ویرایش"
+  [style]="{ width: '50rem' }"
+  [(visible)]="noteModalVisible"
+  [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
+>
+  <textarea  pTextarea [autoResize]="true" [(ngModel)]="note" ></textarea>
+  <button pButton severity="secondary" (click)="updateBookmark()">
+    <span pButtonLabel>افزودن</span>
+  </button>
+  <span class="lastEdit" pButtonLabel>آخرین ویرایش: {{ noteLastEdit | jalaliDate }}</span>
+  <button style="float: left;" pButton severity="danger" (click)="removeBookmark()">
+    <span pButtonLabel>حذف</span>
+  </button>
 </p-dialog>

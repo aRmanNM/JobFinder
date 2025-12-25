@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AppService } from '../app.service';
 import { ProfileModel, RecentQuery } from '../interfaces/profile';
-import { JsonPipe } from '@angular/common';
 import { AvatarModule } from 'primeng/avatar';
 import { CardModule } from 'primeng/card';
 import { TableModule } from 'primeng/table';
@@ -9,7 +8,7 @@ import { JalaliDatePipe } from "../extensions/jalali.pipe";
 
 @Component({
   selector: 'app-profile',
-  imports: [JsonPipe, AvatarModule, CardModule, TableModule, JalaliDatePipe],
+  imports: [AvatarModule, CardModule, TableModule, JalaliDatePipe],
   templateUrl: './profile.component.html',
   styles: ``,
 })

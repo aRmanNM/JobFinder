@@ -58,6 +58,12 @@ export class AppService {
     );
   }
 
+  updateBookmark(bookmark: Bookmark): Observable<Bookmark> {
+    return this.http.put<Bookmark>(
+      this.baseUrl + `/Bookmarks`, bookmark
+    );
+  }
+
   removeBookmark(id: number) {
     return this.http.delete(
       this.baseUrl + `/Bookmarks?bookmarkId=${id}`

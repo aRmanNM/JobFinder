@@ -195,3 +195,7 @@ a.p-button {
   padding: 0px;
   margin: 10px 0px;
 }
+
+.p-tag-label  {
+  font-size: 10px;
+}
